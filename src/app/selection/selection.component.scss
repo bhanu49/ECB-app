@@ -1,0 +1,15 @@
+.fileSelectWrap {
+  margin: 5% 0 5% 0;
+  .fileSelectGroup {
+    list-style: none;
+    #addNewFile {
+      text-align: center;
+      border: solid 1px #000;
+      width: 150px;
+      height: 200px;
+      .fileIcon{
+          margin-top: 50%;
+        }
+    }
+  }
+}

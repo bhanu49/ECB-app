@@ -88,5 +88,7 @@
   },
   "rulesDirectory": [
     "codelyzer"
-  ]
+  ],
+  "array-bracket-spacing": [true, "always"],
+  "whitespace": [true, "check-module"]
 }

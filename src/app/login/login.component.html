@@ -1,0 +1,35 @@
+<ng-template #loginModal let-d="dismiss">
+  <div class="modal-body">
+    <div class="form-title text-center">
+      <h4>Login</h4>
+    </div>
+    <div class="">
+      <form #f="ngForm" (ngSubmit)="onLoginSubmit(f)">
+        <div id="userLoginData" ngModelGroup="userData">
+          <div class="form-group">
+            <label for="userName">Username:</label>
+            <input type="text" class="form-control" id="userName" placeholder="User name"
+                   name="userName"
+                   required
+                   ngModel
+                   minlength="6"
+                   #name="ngModel">
+            <span class="help-block" *ngIf="!name.valid && name.touched ">Invalid Username!</span>
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" placeholder="Password"
+                   name="password"
+                   ngModel
+                   minlength="6"
+                   #password="ngModel"
+                   required>
+            <span class="help-block" *ngIf="!password.valid && password.touched ">Invalid password!</span>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success" id="appLogin" [disabled]="!f.valid" >Login
+        </button>
+      </form>
+    </div>
+  </div>
+</ng-template>

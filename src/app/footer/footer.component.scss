@@ -1,0 +1,21 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  min-height: 60px;
+  max-height: 500px;
+  text-align: center;
+  padding-top: 1em;
+  padding-bottom: 20px;
+  overflow-y: scroll;
+  z-index: 100;
+
+  .inlineBlock {
+    display: inline-block;
+    text-align: center;
+  }
+  .main-btn{
+    border: solid 1px black;
+    margin-right: 10px;
+  }
+}
