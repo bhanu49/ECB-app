@@ -1,10 +1,84 @@
-<div class="row fileSelectWrap">
-  <ul class="fileSelectGroup">
+<!--<div class="row fileSelectWrap">
+  <ul class="fileSelectGroup col-md-12">
     <li id="addNewFile">
       <div class="fileIcon">
-        <fa-icon [icon]="faPlus" size="2x"></fa-icon>
+        <input
+          style="display: none"
+          type="file" (change)="onFileChanged($event)"
+          accept="application/pdf"
+          #fileInput>
+        <button class="btn uploadBtn" (click)="fileInput.click()">
+          <fa-icon [icon]="faPlus" size="2x" id="icon"></fa-icon>
+        </button>
+      </div>
+    </li>
+    <li *ngFor="let file of uploadFiles" class="tileWrap">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="fileOperations">
+            <button class="btn btn-primary" *ngIf="file.type === 'locked'"> Unlock & Run </button>
+            <button class="btn btn-primary" *ngIf="file.type === 'new'"> Run </button>
+            <button class="btn customBtn" *ngIf="file.type === 'locked'"> Unlock</button>
+            <button class="btn btn-primary" *ngIf="file.type === 'analyzed'"> Open</button>
+            <button class="btn customBtn" *ngIf="file.type === 'analyzed'"> Re-Run</button>
+            <button class="btn btn-danger"> Remove</button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="fileWrap">
+            <div id="fileIcon">
+              <fa-icon [icon]="faPdf" size="3x" class="iconPdf"></fa-icon>
+            </div>
+            <div id="fileName">
+              {{file.name | titlecase}}
+            </div>
+          </div>
+        </div>
       </div>
     </li>
   </ul>
+</div>-->
+
+<div class="row fileSelectWrap">
+  <div class="col-md-2">
+    <div class="tile" id="addNewFile">
+      <div class="fileIcon">
+        <input
+          style="display: none"
+          type="file" (change)="onFileChanged($event)"
+          accept="application/pdf"
+          #fileInput>
+        <button class="btn uploadBtn" (click)="fileInput.click()">
+          <fa-icon [icon]="faPlus" size="2x" id="icon"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 tileWrap" *ngFor="let file of uploadFiles" >
+    <div class="row">
+      <div class="col-md-6">
+        <div class="fileOperations">
+          <button class="btn btn-primary" *ngIf="file.type === 'locked'"> Unlock & Run </button>
+          <button class="btn btn-primary" *ngIf="file.type === 'new'"> Run </button>
+          <button class="btn customBtn" *ngIf="file.type === 'locked'"> Unlock</button>
+          <button class="btn btn-primary" *ngIf="file.type === 'analyzed'"> Open</button>
+          <button class="btn customBtn" *ngIf="file.type === 'analyzed'"> Re-Run</button>
+          <button class="btn btn-danger remove"> Remove</button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="fileWrap">
+          <div id="fileIcon">
+            <fa-icon [icon]="faPdf" size="3x" class="iconPdf"></fa-icon>
+          </div>
+          <div id="fileName">
+            {{file.name | titlecase}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+
 <app-footer></app-footer>

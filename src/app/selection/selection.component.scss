@@ -1,15 +1,80 @@
+
+.tileWrap {
+  margin-bottom: 10%;
+  .fileOperations {
+    .btn {
+      margin-bottom: 5px;
+      font-size: 14px;
+      width: 124px;
+    }
+
+    .customBtn {
+      border: solid 1px black;
+    }
+
+    .btn-primary {
+      background-color: rgba(22, 155, 213, 1)
+    }
+
+    .remove{
+      position: absolute;
+      right:    0;
+      bottom:   0;
+    }
+  }
+
+  .fileWrap {
+    border: solid 1px gray;
+    width: 150px;
+    height: 200px;
+  }
+
+  #fileName {
+    margin-top: 60%;
+  }
+
+  #fileIcon {
+    margin: 50% 40%;
+  }
+
+  .iconPdf {
+    color: #FF4500;
+  }
+}
+
+.tileWrap {
+  margin-right: 25px;
+}
+
 .fileSelectWrap {
   margin: 5% 0 5% 0;
-  .fileSelectGroup {
-    list-style: none;
-    #addNewFile {
-      text-align: center;
-      border: solid 1px #000;
-      width: 150px;
-      height: 200px;
-      .fileIcon{
-          margin-top: 50%;
-        }
+
+  #addNewFile {
+    text-align: center;
+    border: solid 1px gray;
+    width: 150px;
+    height: 200px;
+
+    .fileIcon {
+      margin-top: 50%;
+    }
+
+    .uploadBtn {
+      //border: solid 2px lightgray;
+      #icon {
+        color: gray;
+      }
     }
   }
 }
+
+.fileOperations {
+  display: none;
+}
+
+div.tileWrap:hover .fileOperations {
+  display: block;
+}
+
+
+

@@ -17,7 +17,6 @@ import { HttpClientModule } from '@angular/common/http';
     routingComponents,
     NavbarComponent,
     FooterComponent
-   // LoginComponent,
   ],
   imports: [
     BrowserModule,
