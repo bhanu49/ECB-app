@@ -1,18 +1,24 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadService {
-  clientId =
-    '405854376236-6kqnrqhaacbrsj0ah1dm7nf8fg5labm9.apps.googleusercontent.com';
-  clientSecret = 'Y8uOq6S8Za_fbZ2ZO9UDaCV6';
-  scope = 'https://www.googleapis.com/auth/drive';
-  url = '';
+  constructor(private http: HttpClient) {}
 
-  constructor() {}
+  postUploadedFile(url: string, data: any) {
+    this.http
+      .post(url, data, {
+        reportProgress: true,
+        observe: 'events'
+      })
+      .subscribe(event => {
+        console.log(event);
+      });
+  }
 
-  postUploadedFile() {
-
+  getFilesData() {
+    return this.http.get('/api/files');
   }
 }

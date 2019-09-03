@@ -10,19 +10,16 @@ const multipartMiddleware = multipart({
 
 const files = [
   {
-    icon: this.faPdf,
     name: "dummy1",
     lastRan: "",
     type: "newFile"
   },
   {
-    icon: this.faLock,
     name: "dummy2",
     lastRan: "",
     type: "locked"
   },
   {
-    icon: this.faChart,
     name: "dummy3",
     lastRan: "",
     type: "analyzed"
@@ -48,6 +45,7 @@ app.get("/api/files", (req, res) => {
 });
 
 app.post("/api/upload", multipartMiddleware, (req, res) => {
+  console.log(req);
   res.json({
     message: "File uploaded succesfully."
   });

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UploadService } from '../restUtils/shared/upload.service';
+import { map } from 'rxjs/operators';
 
 import {
   faPlus,
@@ -9,9 +11,8 @@ import {
   faRedo,
   faTrashAlt,
   faUnlock,
-  faFolderOpen
+  faFolderOpen, faPauseCircle, faStopCircle
 } from '@fortawesome/free-solid-svg-icons';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-selection',
@@ -28,33 +29,41 @@ export class SelectionComponent implements OnInit {
   faTrash = faTrashAlt;
   faUnlock = faUnlock;
   faOpen = faFolderOpen;
-
+  faPause = faPauseCircle;
+  faStop = faStopCircle;
   private selectedFile: File = null;
 
-  uploadFiles = [
-    {
-      icon: this.faPdf,
-      name: 'dummy1',
-      lastRan: '',
-      type: 'newFile'
-    },
-    {
-      icon: this.faLock,
-      name: 'dummy2',
-      lastRan: '',
-      type: 'locked'
-    },
-    {
-      icon: this.faChart,
-      name: 'dummy3',
-      lastRan: '',
-      type: 'analyzed'
-    }
-  ];
+  displayFiles: any;
+  unlockWithRun = false;
+  runFileAnalysis = false;
+  reRunFileAnalysis = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private upSvc: UploadService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.upSvc
+      .getFilesData()
+      .pipe(
+        map(resp => {
+          const fileData = [];
+          for (const key in resp) {
+            if (resp[key].type === 'newFile') {
+                fileData.push({ ...resp[key], icon: this.faPdf });
+              }
+            if (resp[key].type === 'locked') {
+                fileData.push({ ...resp[key], icon: this.faLock });
+              }
+            if (resp[key].type === 'analyzed') {
+                fileData.push({ ...resp[key], icon: this.faChart });
+              }
+          }
+          return fileData;
+        })
+      )
+      .subscribe(response => {
+        this.displayFiles = response;
+      });
+  }
 
   onFileChange(event) {
     this.selectedFile = event.target.files[0] as File;
@@ -73,27 +82,23 @@ export class SelectionComponent implements OnInit {
       type: 'newFile'
     };
 
-    this.uploadFiles.push(data);
-
-    // handel uploads
-
-    this.http.post('/api/upload', uploadData, {
-       reportProgress: true,
-       observe: 'events'
-     }).subscribe(event => {
-       console.log(event);
-     });
+    this.displayFiles.push(data);
+    this.upSvc.postUploadedFile('/api/upload', uploadData);
   }
 
   unlockAndRun() {
-    console.log('clicked');
+    this.unlockWithRun = !this.unlockWithRun;
   }
 
-  runAnalysis() {}
+  runAnalysis() {
+    this.runFileAnalysis = !this.runFileAnalysis;
+  }
 
   unlockFile() {}
 
   openFile() {}
 
-  reRunAnalysis() {}
+  reRunAnalysis() {
+    this.reRunFileAnalysis = !this.reRunFileAnalysis
+  }
 }

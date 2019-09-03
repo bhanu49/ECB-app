@@ -1,8 +1,7 @@
-
 .tileWrap {
   margin-bottom: 10%;
   .fileOperations {
-    .btn {
+    .mainGrp {
       padding: 6px 6px;
       margin-bottom: 5px;
       font-size: 14px;
@@ -10,20 +9,20 @@
     }
 
     .btn-primary {
-      background-color: rgba(22, 155, 213, 1)
+      background-color: rgba(22, 155, 213, 1);
     }
 
-    .remove{
+    .remove {
       position: absolute;
-      right:    0;
-      bottom:   0;
+      right: 0;
+      bottom: -5px;
     }
   }
 
   .fileWrap {
     border: solid 1px gray;
     width: 125px;
-    height: 165px;
+    height: 170px;
   }
 
   .fileName {
@@ -34,14 +33,20 @@
     margin: 40% 28%;
   }
 
-  .newFile{
-    color: #FF4500;
+  .newFile {
+    color: #ff4500;
   }
-  .locked{
+  .locked {
     color: gray;
   }
-  .analyzed{
+  .analyzed {
     color: cornflowerblue;
+  }
+  .progressWrap {
+    .btn {
+      margin-top: 4px;
+      padding: 2px 5px;
+    }
   }
 }
 
@@ -56,7 +61,7 @@
     text-align: center;
     border: solid 1px gray;
     width: 125px;
-    height: 165px;
+    height: 170px;
 
     .addIcon {
       margin-top: 40%;
@@ -71,7 +76,7 @@
 }
 
 .fileOperations {
-  display: none;
+   display: none;
 }
 
 div.tileWrap:hover .fileOperations {
