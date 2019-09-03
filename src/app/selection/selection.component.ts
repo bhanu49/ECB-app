@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {faPlus, faFilePdf, faLock} from '@fortawesome/free-solid-svg-icons';
+import {faPlus, faFilePdf, faLock, faChartLine} from '@fortawesome/free-solid-svg-icons';
 import {HttpClient} from '@angular/common/http';
 
 @Component({
@@ -11,6 +11,7 @@ export class SelectionComponent implements OnInit {
   faPlus = faPlus;
   faPdf = faFilePdf;
   faLock = faLock;
+  faChart = faChartLine;
   private selectedFile: File = null;
 
   uploadFiles = [
@@ -18,7 +19,7 @@ export class SelectionComponent implements OnInit {
       icon: this.faPdf,
       name: 'dummy1',
       lastRan: '',
-      type: 'new'
+      type: 'newFile'
     },
     {
       icon: this.faLock,
@@ -27,13 +28,7 @@ export class SelectionComponent implements OnInit {
       type: 'locked'
     },
     {
-      icon: this.faLock,
-      name: 'dummy3',
-      lastRan: '',
-      type: 'analyzed'
-    },
-    {
-      icon: this.faLock,
+      icon: this.faChart,
       name: 'dummy3',
       lastRan: '',
       type: 'analyzed'
@@ -73,5 +68,26 @@ export class SelectionComponent implements OnInit {
      }).subscribe(event => {
        console.log(event); // handle event here
      });*/
+  }
+
+  unlockAndRun() {
+    console.log('clicked');
+  }
+
+  runAnalysis() {
+
+  }
+
+  unlockFile() {
+
+  }
+
+  openFile() {
+
+  }
+
+
+  reRunAnalysis() {
+
   }
 }

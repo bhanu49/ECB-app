@@ -4,12 +4,8 @@
   .fileOperations {
     .btn {
       margin-bottom: 5px;
-      font-size: 14px;
+      font-size: 15px;
       width: 124px;
-    }
-
-    .customBtn {
-      border: solid 1px black;
     }
 
     .btn-primary {
@@ -25,25 +21,31 @@
 
   .fileWrap {
     border: solid 1px gray;
-    width: 150px;
-    height: 200px;
+    width: 125px;
+    height: 165px;
   }
 
-  #fileName {
-    margin-top: 60%;
+  .fileName {
+    margin-top: 45%;
   }
 
-  #fileIcon {
-    margin: 50% 40%;
+  .fileIcon {
+    margin: 40% 28%;
   }
 
-  .iconPdf {
+  .newFile{
     color: #FF4500;
+  }
+  .locked{
+    color: gray;
+  }
+  .analyzed{
+    color: cornflowerblue;
   }
 }
 
 .tileWrap {
-  margin-right: 25px;
+  margin-right: 30px;
 }
 
 .fileSelectWrap {
@@ -52,15 +54,14 @@
   #addNewFile {
     text-align: center;
     border: solid 1px gray;
-    width: 150px;
-    height: 200px;
+    width: 125px;
+    height: 165px;
 
-    .fileIcon {
-      margin-top: 50%;
+    .addIcon {
+      margin-top: 40%;
     }
 
     .uploadBtn {
-      //border: solid 2px lightgray;
       #icon {
         color: gray;
       }
@@ -75,6 +76,3 @@
 div.tileWrap:hover .fileOperations {
   display: block;
 }
-
-
-
