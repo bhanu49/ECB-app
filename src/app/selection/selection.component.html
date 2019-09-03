@@ -4,40 +4,83 @@
       <div class="addIcon">
         <input
           style="display: none"
-          type="file" (change)="onFileChanged($event)"
+          type="file"
+          (change)="onFileChange($event)"
           accept="application/pdf"
-          #fileInput>
+          #fileInput
+        />
         <button class="btn uploadBtn" (click)="fileInput.click()">
           <fa-icon [icon]="faPlus" size="3x" id="icon"></fa-icon>
         </button>
       </div>
     </div>
   </div>
-  <div class="col-md-3 tileWrap" *ngFor="let file of uploadFiles" >
+  <div class="col-md-3 tileWrap" *ngFor="let file of uploadFiles">
     <div class="row">
       <div class="col-md-6">
         <div class="fileOperations">
-          <button class="btn btn-primary" *ngIf="file.type === 'locked'" (click)="unlockAndRun()"> Unlock & Run </button>
-          <button class="btn btn-primary" *ngIf="file.type === 'newFile'" (click)="runAnalysis()"> Run </button>
-          <button class="btn  btn-outline-dark" *ngIf="file.type === 'locked'" (click)="unlockFile()"> Unlock</button>
-          <button class="btn btn-primary" *ngIf="file.type === 'analyzed'" (click)="openFile()"> Open</button>
-          <button class="btn  btn-outline-dark" *ngIf="file.type === 'analyzed'" (click)="reRunAnalysis()"> Re-Run</button>
-          <button class="btn btn-danger remove"> Remove</button>
+          <button
+            class="btn btn-primary"
+            *ngIf="file.type === 'locked'"
+            (click)="unlockAndRun()"
+          >
+            <fa-icon [icon]="faPlay" size="lg" class="float-left"></fa-icon>
+            Unlock & Run
+          </button>
+          <button
+            class="btn btn-primary"
+            *ngIf="file.type === 'newFile'"
+            (click)="runAnalysis()"
+          >
+            <fa-icon [icon]="faPlay" size="lg" class="float-left"></fa-icon>
+            Run
+          </button>
+          <button
+            class="btn  btn-outline-dark"
+            *ngIf="file.type === 'locked'"
+            (click)="unlockFile()"
+          >
+            <fa-icon [icon]="faUnlock" size="lg" class="float-left"></fa-icon>
+            Unlock
+          </button>
+          <button
+            class="btn btn-primary"
+            *ngIf="file.type === 'analyzed'"
+            (click)="openFile()"
+          >
+            <fa-icon [icon]="faOpen" size="lg" class="float-left"></fa-icon>
+            Open
+          </button>
+          <button
+            class="btn  btn-outline-dark"
+            *ngIf="file.type === 'analyzed'"
+            (click)="reRunAnalysis()"
+          >
+            <fa-icon [icon]="faRedo" size="lg" class="float-left"></fa-icon>
+            Re-Run
+          </button>
+          <button class="btn btn-danger remove">
+            <fa-icon [icon]="faTrash" size="lg" class="float-left"></fa-icon>
+            Remove
+          </button>
         </div>
       </div>
       <div class="col-md-6">
         <div class="fileWrap">
           <div class="fileIcon">
-            <fa-icon [icon]="file.icon" size="4x" [className]="file.type"></fa-icon>
+            <fa-icon
+              [icon]="file.icon"
+              size="4x"
+              [className]="file.type"
+            ></fa-icon>
           </div>
           <div class="fileName">
-            {{file.name | titlecase}}
+            {{ file.name | titlecase }}
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
 
 <app-footer></app-footer>

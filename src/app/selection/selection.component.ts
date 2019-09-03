@@ -1,6 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {faPlus, faFilePdf, faLock, faChartLine} from '@fortawesome/free-solid-svg-icons';
-import {HttpClient} from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+
+import {
+  faPlus,
+  faFilePdf,
+  faLock,
+  faChartLine,
+  faPlayCircle,
+  faRedo,
+  faTrashAlt,
+  faUnlock,
+  faFolderOpen
+} from '@fortawesome/free-solid-svg-icons';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-selection',
@@ -12,6 +23,12 @@ export class SelectionComponent implements OnInit {
   faPdf = faFilePdf;
   faLock = faLock;
   faChart = faChartLine;
+  faPlay = faPlayCircle;
+  faRedo = faRedo;
+  faTrash = faTrashAlt;
+  faUnlock = faUnlock;
+  faOpen = faFolderOpen;
+
   private selectedFile: File = null;
 
   uploadFiles = [
@@ -35,13 +52,11 @@ export class SelectionComponent implements OnInit {
     }
   ];
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  onFileChanged(event) {
+  onFileChange(event) {
     this.selectedFile = event.target.files[0] as File;
     this.uploadFile();
     console.log(this.selectedFile);
@@ -55,39 +70,30 @@ export class SelectionComponent implements OnInit {
       icon: this.faPdf,
       name: this.selectedFile.name,
       lastRan: '',
-      type: 'new'
+      type: 'newFile'
     };
 
     this.uploadFiles.push(data);
 
     // handel uploads
 
-    /* this.http.post('', uploadData, {
+    this.http.post('/api/upload', uploadData, {
        reportProgress: true,
        observe: 'events'
      }).subscribe(event => {
-       console.log(event); // handle event here
-     });*/
+       console.log(event);
+     });
   }
 
   unlockAndRun() {
     console.log('clicked');
   }
 
-  runAnalysis() {
+  runAnalysis() {}
 
-  }
+  unlockFile() {}
 
-  unlockFile() {
+  openFile() {}
 
-  }
-
-  openFile() {
-
-  }
-
-
-  reRunAnalysis() {
-
-  }
+  reRunAnalysis() {}
 }
