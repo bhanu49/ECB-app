@@ -15,7 +15,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-3 tileWrap" *ngFor="let file of displayFiles" [attr.data-id]="file.id" #tile>
+  <div class="col-md-3 tileWrap" *ngFor="let file of displayFiles" [attr.data-id]="file.key" #tile>
     <div class="row">
       <div class="col-md-6">
         <div class="fileOperations">
@@ -131,7 +131,7 @@
             </div>
           </div>
           <div class="removeWrap">
-            <button class="btn btn-danger remove mainGrp" (click)="removeTile($event)" [attr.data-tile-id]="file.id">
+            <button class="btn btn-danger remove mainGrp" (click)="removeTile($event)" [attr.data-tile-id]="file.key">
               <fa-icon [icon]="faTrash" size="lg" class="float-left"></fa-icon>
               Remove
             </button>

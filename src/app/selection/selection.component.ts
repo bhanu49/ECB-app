@@ -23,7 +23,7 @@ import {
   styleUrls: ['./selection.component.scss']
 })
 export class SelectionComponent implements OnInit {
-  @ViewChild( RemoveComponent, { static: false }) removeModal: RemoveComponent;
+  @ViewChild(RemoveComponent, { static: false }) removeModal: RemoveComponent;
 
   faPlus = faPlus;
   faPdf = faFilePdf;
@@ -53,14 +53,15 @@ export class SelectionComponent implements OnInit {
         map(resp => {
           const fileData = [];
           for (const key in resp) {
-            if (resp[key].type === 'newFile') {
-              fileData.push({ ...resp[key], icon: this.faPdf });
+            const i = resp[key];
+            if (!i.locked && i.processed) {
+              fileData.push({ ...i, icon: this.faPdf, name: key, type: 'newFile' });
             }
-            if (resp[key].type === 'locked') {
-              fileData.push({ ...resp[key], icon: this.faLock });
+            if (i.locked && !i.processed) {
+              fileData.push({ ...resp[key], icon: this.faLock, name: key, type: 'locked'  });
             }
-            if (resp[key].type === 'analyzed') {
-              fileData.push({ ...resp[key], icon: this.faChart });
+            if (!i.processed && !i.locked) {
+              fileData.push({ ...resp[key], icon: this.faChart, name: key, type: 'analyzed'});
             }
           }
           return fileData;
@@ -85,7 +86,7 @@ export class SelectionComponent implements OnInit {
       name: this.selectedFile.name,
       lastRan: '',
       type: 'newFile',
-      id: Math.floor(Math.random() * 100)
+      key: Math.floor(Math.random() * 100)
     };
 
     this.displayFiles.push(data);

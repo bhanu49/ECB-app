@@ -8,8 +8,34 @@ const multipartMiddleware = multipart({
   uploadDir: "./uploads"
 });
 
-const files = [
-  {
+const files = {
+  "dummy file": {
+    locked: false,
+    key: "1",
+    path: "eg path",
+    format: "pdf",
+    processed: true,
+    last_modified: "2019-9-3 19:32:36.435350"
+  },
+  "dummy file2": {
+    locked: true,
+    key: "2",
+    path: "eg path",
+    format: "pdf",
+    processed: false,
+    last_modified: "2019-9-3 19:32:36.435350"
+  },
+  "dummy file3": {
+    locked: false,
+    key: "3",
+    path: "eg path",
+    format: "pdf",
+    processed: false,
+    last_modified: "2019-9-3 19:32:36.435350"
+  }
+};
+
+/*{
     id: "1",
     name: "dummy1",
     lastRan: "",
@@ -26,8 +52,7 @@ const files = [
     name: "dummy3",
     lastRan: "",
     type: "analyzed"
-  }
-];
+  }*/
 
 app.use(bodyParser.json());
 app.use(
