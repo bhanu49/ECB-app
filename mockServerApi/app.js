@@ -32,6 +32,14 @@ const files = {
     format: "pdf",
     processed: false,
     last_modified: "2019-9-3 19:32:36.435350"
+  },
+  "dummy file4": {
+    locked: false,
+    key: "3",
+    path: "eg path",
+    format: "pdf",
+    processed: false,
+    last_modified: "2019-9-3 19:32:36.435350"
   }
 };
 
@@ -51,6 +59,13 @@ app.get("/api/user", (req, res) => {
 
 app.get("/api/files", (req, res) => {
   res.json(files);
+});
+
+app.get("/api/selected/name", (req, res) => {
+  res.json({
+    name: "open this file",
+    password: "i am working"
+  });
 });
 
 app.post("/api/upload", multipartMiddleware, (req, res) => {

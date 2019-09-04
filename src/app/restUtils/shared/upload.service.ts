@@ -19,6 +19,6 @@ export class UploadService {
   }
 
   getFilesData() {
-    return this.http.get('/api/files');
+    return this.http.get('/api/files/');
   }
 }

@@ -91,7 +91,7 @@
             </button>
           </div>
           <div class="analyzedWrap" *ngIf="file.type === 'analyzed'">
-            <button class="btn btn-primary mainGrp" (click)="openFile()">
+            <button class="btn btn-primary mainGrp" (click)="openFile(file.name)">
               <fa-icon [icon]="faOpen" size="lg" class="float-left"></fa-icon>
               Open
             </button>

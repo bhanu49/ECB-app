@@ -16,6 +16,7 @@ import {
   faPauseCircle,
   faStopCircle
 } from '@fortawesome/free-solid-svg-icons';
+import { GetSelectedFileService } from '../restUtils/shared/get-selected-file.service';
 
 @Component({
   selector: 'app-selection',
@@ -44,7 +45,10 @@ export class SelectionComponent implements OnInit {
   private selectedFile: File = null;
   private tileId: number;
 
-  constructor(private upSvc: UploadService) {}
+  constructor(
+    private upSvc: UploadService,
+    private openSelFile: GetSelectedFileService
+  ) {}
 
   ngOnInit() {
     this.upSvc
@@ -55,13 +59,28 @@ export class SelectionComponent implements OnInit {
           for (const key in resp) {
             const i = resp[key];
             if (!i.locked && i.processed) {
-              fileData.push({ ...i, icon: this.faPdf, name: key, type: 'newFile' });
+              fileData.push({
+                ...i,
+                icon: this.faPdf,
+                name: key,
+                type: 'newFile'
+              });
             }
             if (i.locked && !i.processed) {
-              fileData.push({ ...resp[key], icon: this.faLock, name: key, type: 'locked'  });
+              fileData.push({
+                ...resp[key],
+                icon: this.faLock,
+                name: key,
+                type: 'locked'
+              });
             }
             if (!i.processed && !i.locked) {
-              fileData.push({ ...resp[key], icon: this.faChart, name: key, type: 'analyzed'});
+              fileData.push({
+                ...resp[key],
+                icon: this.faChart,
+                name: key,
+                type: 'analyzed'
+              });
             }
           }
           return fileData;
@@ -103,9 +122,12 @@ export class SelectionComponent implements OnInit {
 
   unlockFile() {}
 
-  openFile() {
-    // todo: navigate to editor components
+  openFile(name: string) {
 
+    const dummyName = 'name';
+    this.openSelFile.openSelectedFile(dummyName).subscribe(resp => {
+      console.log(resp);
+    });
   }
 
   reRunAnalysis() {
