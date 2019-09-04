@@ -10,13 +10,15 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
+import { RemoveComponent } from './remove/remove.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     routingComponents,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    RemoveComponent
   ],
   imports: [
     BrowserModule,

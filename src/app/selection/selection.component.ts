@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UploadService } from '../restUtils/shared/upload.service';
+import { RemoveComponent } from '../remove/remove.component';
 import { map } from 'rxjs/operators';
 
 import {
@@ -11,7 +12,9 @@ import {
   faRedo,
   faTrashAlt,
   faUnlock,
-  faFolderOpen, faPauseCircle, faStopCircle
+  faFolderOpen,
+  faPauseCircle,
+  faStopCircle
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -20,6 +23,8 @@ import {
   styleUrls: ['./selection.component.scss']
 })
 export class SelectionComponent implements OnInit {
+  @ViewChild( RemoveComponent, { static: false }) removeModal: RemoveComponent;
+
   faPlus = faPlus;
   faPdf = faFilePdf;
   faLock = faLock;
@@ -31,12 +36,13 @@ export class SelectionComponent implements OnInit {
   faOpen = faFolderOpen;
   faPause = faPauseCircle;
   faStop = faStopCircle;
-  private selectedFile: File = null;
-
   displayFiles: any;
   unlockWithRun = false;
   runFileAnalysis = false;
   reRunFileAnalysis = false;
+
+  private selectedFile: File = null;
+  private tileId: number;
 
   constructor(private upSvc: UploadService) {}
 
@@ -48,14 +54,14 @@ export class SelectionComponent implements OnInit {
           const fileData = [];
           for (const key in resp) {
             if (resp[key].type === 'newFile') {
-                fileData.push({ ...resp[key], icon: this.faPdf });
-              }
+              fileData.push({ ...resp[key], icon: this.faPdf });
+            }
             if (resp[key].type === 'locked') {
-                fileData.push({ ...resp[key], icon: this.faLock });
-              }
+              fileData.push({ ...resp[key], icon: this.faLock });
+            }
             if (resp[key].type === 'analyzed') {
-                fileData.push({ ...resp[key], icon: this.faChart });
-              }
+              fileData.push({ ...resp[key], icon: this.faChart });
+            }
           }
           return fileData;
         })
@@ -68,7 +74,6 @@ export class SelectionComponent implements OnInit {
   onFileChange(event) {
     this.selectedFile = event.target.files[0] as File;
     this.uploadFile();
-    console.log(this.selectedFile);
   }
 
   uploadFile() {
@@ -79,7 +84,8 @@ export class SelectionComponent implements OnInit {
       icon: this.faPdf,
       name: this.selectedFile.name,
       lastRan: '',
-      type: 'newFile'
+      type: 'newFile',
+      id: Math.floor(Math.random() * 100)
     };
 
     this.displayFiles.push(data);
@@ -96,9 +102,17 @@ export class SelectionComponent implements OnInit {
 
   unlockFile() {}
 
-  openFile() {}
+  openFile() {
+    // todo: navigate to editor components
+  }
 
   reRunAnalysis() {
-    this.reRunFileAnalysis = !this.reRunFileAnalysis
+    this.reRunFileAnalysis = !this.reRunFileAnalysis;
+  }
+
+  removeTile(el) {
+    // get the id of tile and pass it to remove component
+    this.tileId = el.target.getAttribute('data-tile-id');
+    this.removeModal.show();
   }
 }

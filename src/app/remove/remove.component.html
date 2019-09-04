@@ -1,0 +1,24 @@
+<ng-template #removeModal let-c="close">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Are you sure you want to cancel the analysis?
+    </h4>
+  </div>
+  <div class="modal-body">
+    <div>
+      <p>
+        When you cancel the analysis current Progress will be lost!
+      </p>
+    </div>
+    <div class="modelOperations">
+      <button type="button" class="btn btn-success" (click)="removeTile($event)">Yes</button>
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="c('Close click')"
+      >
+        No
+      </button>
+    </div>
+  </div>
+</ng-template>

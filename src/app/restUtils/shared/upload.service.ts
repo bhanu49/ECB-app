@@ -13,8 +13,8 @@ export class UploadService {
         reportProgress: true,
         observe: 'events'
       })
-      .subscribe(event => {
-        console.log(event);
+      .subscribe(resp => {
+        console.log(resp);
       });
   }
 
