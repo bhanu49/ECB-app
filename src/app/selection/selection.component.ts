@@ -105,6 +105,7 @@ export class SelectionComponent implements OnInit {
 
   openFile() {
     // todo: navigate to editor components
+
   }
 
   reRunAnalysis() {

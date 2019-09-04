@@ -35,25 +35,6 @@ const files = {
   }
 };
 
-/*{
-    id: "1",
-    name: "dummy1",
-    lastRan: "",
-    type: "newFile"
-  },
-  {
-    id: "2",
-    name: "dummy2",
-    lastRan: "",
-    type: "locked"
-  },
-  {
-    id: "3",
-    name: "dummy3",
-    lastRan: "",
-    type: "analyzed"
-  }*/
-
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
