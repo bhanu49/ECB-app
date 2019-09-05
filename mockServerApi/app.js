@@ -64,7 +64,7 @@ app.get("/api/files", (req, res) => {
 app.get("/api/selected/name", (req, res) => {
   res.json({
     name: "open this file",
-    password: "i am working"
+    text: "i am working"
   });
 });
 

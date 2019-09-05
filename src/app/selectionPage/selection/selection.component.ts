@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UploadService } from '../restUtils/shared/upload.service';
+import { UploadService } from '../../restUtils/shared/upload.service';
 import { RemoveComponent } from '../remove/remove.component';
 import { map } from 'rxjs/operators';
 
@@ -16,7 +16,8 @@ import {
   faPauseCircle,
   faStopCircle
 } from '@fortawesome/free-solid-svg-icons';
-import { GetSelectedFileService } from '../restUtils/shared/get-selected-file.service';
+import { GetSelectedFileService } from '../../restUtils/shared/get-selected-file.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-selection',
@@ -47,7 +48,7 @@ export class SelectionComponent implements OnInit {
 
   constructor(
     private upSvc: UploadService,
-    private openSelFile: GetSelectedFileService
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -123,11 +124,8 @@ export class SelectionComponent implements OnInit {
   unlockFile() {}
 
   openFile(name: string) {
-
-    const dummyName = 'name';
-    this.openSelFile.openSelectedFile(dummyName).subscribe(resp => {
-      console.log(resp);
-    });
+    // navigate to editor
+    this.router.navigate(['/editor', name]).then(r => console.log('Editor page:' + r));
   }
 
   reRunAnalysis() {

@@ -1,6 +1,6 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {ModalDismissReasons, NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import { UploadService } from '../restUtils/shared/upload.service';
+import { UploadService } from '../../restUtils/shared/upload.service';
 
 @Component({
   selector: 'app-remove',

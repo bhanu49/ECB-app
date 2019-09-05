@@ -1,6 +1,4 @@
-.footer {
-  position: fixed;
-  bottom: 0;
+.editorFooter {
   width: 100%;
   min-height: 60px;
   max-height: 500px;
@@ -9,12 +7,16 @@
   padding-bottom: 20px;
   overflow-y: scroll;
   z-index: 100;
+  background-color: #efefef;
 
-  .inlineBlock {
-    display: inline-block;
-    text-align: center;
-  }
   .btn{
     margin-right: 10px;
+  }
+  .d-inline{
+    margin-right: 15px;
+    #tableCount{
+      font-size: 14px;
+      color: rgb(127, 127, 127);
+    }
   }
 }
