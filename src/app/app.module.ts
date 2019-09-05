@@ -14,6 +14,8 @@ import { RemoveComponent } from './selectionPage/remove/remove.component';
 import { EditorComponent } from './editorPage/editor/editor.component';
 import { HeaderComponent } from './editorPage/header/header.component';
 import { EditorFooterComponent } from './editorPage/editor-footer/editor-footer.component';
+import { SidePanelComponent } from './editorPage/side-panel/side-panel.component';
+
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { EditorFooterComponent } from './editorPage/editor-footer/editor-footer.
     RemoveComponent,
     EditorComponent,
     HeaderComponent,
-    EditorFooterComponent
+    EditorFooterComponent,
+    SidePanelComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,9 +37,8 @@ import { EditorFooterComponent } from './editorPage/editor-footer/editor-footer.
     NgbModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-
-}
+export class AppModule {}
