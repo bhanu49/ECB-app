@@ -1,0 +1,111 @@
+<div class="sidebarWrap">
+  <h4>Header</h4>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="headerCheck" />
+    <label class="form-check-label" for="headerCheck">
+      Default checkbox
+    </label>
+  </div>
+
+  <div class="editor">
+    <form>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="columns">Columns</label>
+          <input
+            type="email"
+            class="form-control form-control-sm"
+            id="columns"
+          />
+        </div>
+        <div class="form-group col-md-6">
+          <label for="rows">Rows</label>
+          <input
+            type="password"
+            class="form-control form-control-sm"
+            id="rows"
+          />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" />
+          <label class="form-check-label">
+            Check me out
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputAddress">Line Color</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="inputAddress"
+          placeholder="1234 Main St"
+        />
+      </div>
+      <div class="form-group">
+        <label for="inputAddress2"> Background Color</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="inputAddress2"
+          placeholder="Apartment, studio, or floor"
+        />
+      </div>
+
+      <div class="form-group">
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="radioGrp"
+            id="stream"
+            value="option1"
+          />
+          <label class="form-check-label" for="stream">Stream</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="radioGrp"
+            id="lattice"
+            value="option2"
+          />
+          <label class="form-check-label" for="lattice">Lattice</label>
+        </div>
+      </div>
+      <div class="editorActions">
+        <div class="form-row">
+          <div class="form-group col-md-3"></div>
+          <div class="form-group col-md-6">
+            <button class="btn btn-outline-dark btn-sm">Add Tracing Box</button>
+          </div>
+          <div class="form-group col-md-3">
+            <button class="btn btn-primary btn-sm">Re-Run</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <hr />
+  <div class="textBox">
+    <p>Flag a problem</p>
+
+    <label for="textArea">
+      <span>
+        <fa-icon [icon]="faInfo" size="1x"></fa-icon>
+      </span>
+      You can help the software to recognize tables correctly.
+      <span>
+        <a href="#">Click here</a>
+      </span>
+      to get a helpful tracing guide!</label>
+    <textarea class="form-control" id="textArea" rows="3"></textarea>
+
+    <div class="textAreaBtn float-right">
+      <button class="btn btn-info" disabled>Flag</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+.sidebarWrap {
+  margin: 40px;
+  .editor{
+    margin-top: 10px;
+    form{
+      max-width: 300px;
+    }
+  }
+  .textBox{
+    label{
+      max-width: 300px;
+      text-align: justify-all;
+    }
+    .textAreaBtn{
+      margin-top: 10px;
+    }
+  }
+}
+

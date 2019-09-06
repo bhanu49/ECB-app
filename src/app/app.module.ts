@@ -14,8 +14,8 @@ import { RemoveComponent } from './selectionPage/remove/remove.component';
 import { EditorComponent } from './editorPage/editor/editor.component';
 import { HeaderComponent } from './editorPage/header/header.component';
 import { EditorFooterComponent } from './editorPage/editor-footer/editor-footer.component';
-import { SidePanelComponent } from './editorPage/side-panel/side-panel.component';
-
+import {SidebarModule} from 'ng-sidebar';
+import {SidebarComponent} from './editorPage/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +27,7 @@ import { SidePanelComponent } from './editorPage/side-panel/side-panel.component
     EditorComponent,
     HeaderComponent,
     EditorFooterComponent,
-    SidePanelComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -35,10 +35,10 @@ import { SidePanelComponent } from './editorPage/side-panel/side-panel.component
     FormsModule,
     FontAwesomeModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    SidebarModule.forRoot()
   ],
-  providers: [
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

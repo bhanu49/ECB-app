@@ -14,9 +14,14 @@
 }
 
 body {
+  /*
   padding-top: 135px;
+  */
+  padding-top: 65px;
 }
 
 .container{
+  /*
   margin-bottom: 120px;
+  */
 }
