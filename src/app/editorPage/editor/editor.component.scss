@@ -1,5 +1,10 @@
-ng-sidebar {
-  aside.ng-sidebar {
-    background-color: darkslategray !important;
-  }
+
+ng-sidebar-container{
+  height: 100vh;
+}
+
+::ng-deep .ng-sidebar{
+  margin-top: 40px !important;
+  background-color: #efefef !important;
+  position: fixed !important;
 }

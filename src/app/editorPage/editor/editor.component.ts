@@ -26,6 +26,8 @@ export class EditorComponent implements OnInit {
     this.openSelFile.openSelectedFile(dummyName).subscribe(resp => {
       console.log(resp);
     });
+
+
   }
 
   toggleSidebar() {
