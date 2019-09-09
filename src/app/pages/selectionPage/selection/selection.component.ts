@@ -46,6 +46,7 @@ export class SelectionComponent implements OnInit {
   private selectedFile: File = null;
   private tileId: number;
   public tileInd: number;
+  invalidPw = [];
   constructor(
     private upSvc: UploadService,
     private router: Router
@@ -124,9 +125,12 @@ export class SelectionComponent implements OnInit {
   unlockFile(form, key, ind) {
     const selectedFile = this.displayFiles.find(x => x.id === key);
     if (selectedFile.key === form.value.password) {
-      // todo: show progress bar and hide input
+      // todo: show progress bar in sync with api req
       console.log('unlocked');
       this.unlockWithRun[ind] = !this.unlockWithRun[ind];
+      this.invalidPw[ind] = false;
+    } else {
+      this.invalidPw[ind] = true;
     }
   }
 

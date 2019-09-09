@@ -16,6 +16,8 @@ import { HeaderComponent } from './pages/editorPage/header/header.component';
 import { EditorFooterComponent } from './pages/editorPage/editor-footer/editor-footer.component';
 import {SidebarModule} from 'ng-sidebar';
 import {SidebarComponent} from './pages/editorPage/sidebar/sidebar.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+
 
 @NgModule({
   declarations: [
@@ -36,6 +38,7 @@ import {SidebarComponent} from './pages/editorPage/sidebar/sidebar.component';
     FontAwesomeModule,
     NgbModule,
     HttpClientModule,
+    PdfViewerModule,
     SidebarModule.forRoot()
   ],
   providers: [],

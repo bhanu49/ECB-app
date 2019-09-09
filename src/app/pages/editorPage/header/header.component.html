@@ -8,9 +8,9 @@
         </div>
         <div class="col-md-7">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search..">
+            <input type="text" class="form-control" placeholder="Search.." #text>
             <div class="input-group-append">
-              <button class="btn btn-info" type="button">
+              <button class="btn btn-info" type="button" (click)="startSearch(text.value)">
                 <fa-icon [icon]="faSearch" size="1x" id="icon"></fa-icon>
               </button>
             </div>

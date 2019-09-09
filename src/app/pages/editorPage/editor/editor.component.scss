@@ -9,6 +9,9 @@ ng-sidebar-container {
 }
 
 .tableSection {
+  .content{
+    margin-right: 10%;
+  }
   .infoIcon {
     color: cornflowerblue;
   }
@@ -36,4 +39,8 @@ ng-sidebar-container {
       color: dimgray;
     }
   }
+}
+.container-fluid{
+  margin-bottom: 120px;
+  margin-right: 10%;
 }

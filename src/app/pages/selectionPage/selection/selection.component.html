@@ -46,6 +46,7 @@
                     required=""
                     minlength="5"
                   />
+                  <small *ngIf="invalidPw[i]" class="help-block"> Invalid Password</small>
                   <div class="progress">
                     <div
                       class="progress-bar"
@@ -110,7 +111,7 @@
             </div>
             <div
               class="unlockWrap"
-              *ngIf="file.type === 'locked' && !unlockWithRun"
+              *ngIf="file.type === 'locked' && !unlockWithRun[i]"
             >
               <button class="btn  btn-outline-dark mainGrp">
                 <fa-icon

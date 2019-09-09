@@ -12,29 +12,17 @@
   <div ng-sidebar-content>
     <app-header></app-header>
 
-    <div class="container">
-      <div class="row">
+    <div class="container-fluid">
+      <div class="row sectionWrap">
         <div class="col-md-6 pageSection">
           <div class="content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut in neque
-            in ligula fringilla bibendum. Cras posuere arcu sem, id convallis
-            diam aliquet at. Pellentesque dapibus ligula nec augue facilisis
-            dapibus. Integer fermentum vulputate consectetur. Praesent quam sem,
-            varius vitae nisi sit amet, tincidunt blandit felis. Curabitur
-            volutpat, nunc sed rhoncus faucibus, massa diam viverra eros, sit
-            amet pellentesque augue mi quis ligula. Morbi finibus at orci ac
-            vulputate. Vestibulum id ultrices ligula. In enim arcu, molestie nec
-            orci eu, sodales porttitor libero. Sed sit amet turpis vel ipsum
-            ultricies varius. Proin fringilla pretium convallis. Nunc bibendum
-            porttitor sem at faucibus. Donec vestibulum viverra mattis.
-            Suspendisse dignissim metus in sem commodo, sit amet luctus velit
-            varius. Sed urna purus, pretium sit amet tincidunt quis, ornare id
-            lacus. Pellentesque eget dui dapibus elit consequat lacinia. Ut
-            tempus est quis justo consectetur laoreet. Nulla tincidunt neque
-            placerat, faucibus ante quis, venenatis justo. Sed posuere lacus
-            neque, vel porta sapien auctor euismod. Pellentesque quis mauris
-            eros. Suspendisse sollicitudin convallis pulvinar. Donec dapibus
-            maximus
+            <pdf-viewer #pdfViewer
+              [src]="pdfSrc"
+              [render-text]="true"
+              [original-size]="false"
+              [autoresize]="true"
+              (after-load-complete)="afterLoadComplete($event)"
+            ></pdf-viewer>
           </div>
           <button (click)="toggleSidebar()">Toggle sidebar</button>
         </div>
