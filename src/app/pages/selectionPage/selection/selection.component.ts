@@ -39,13 +39,13 @@ export class SelectionComponent implements OnInit {
   faPause = faPauseCircle;
   faStop = faStopCircle;
   displayFiles: any;
-  unlockWithRun = false;
-  runFileAnalysis = false;
-  reRunFileAnalysis = false;
+  unlockWithRun = [];
+  runFileAnalysis = [];
+  reRunFileAnalysis = [];
 
   private selectedFile: File = null;
   private tileId: number;
-
+  public tileInd: number;
   constructor(
     private upSvc: UploadService,
     private router: Router
@@ -113,20 +113,20 @@ export class SelectionComponent implements OnInit {
     this.upSvc.postUploadedFile('/api/upload', uploadData);
   }
 
-  unlockAndRun() {
-    this.unlockWithRun = !this.unlockWithRun;
+  unlockAndRun(ind) {
+    this.unlockWithRun[ind] = !this.unlockWithRun[ind];
   }
 
-  runAnalysis() {
-    this.runFileAnalysis = !this.runFileAnalysis;
+  runAnalysis(ind) {
+    this.runFileAnalysis[ind] = !this.runFileAnalysis[ind];
   }
 
-  unlockFile(form, key) {
+  unlockFile(form, key, ind) {
     const selectedFile = this.displayFiles.find(x => x.id === key);
-    console.log(form);
     if (selectedFile.key === form.value.password) {
-      // show progress bar and hide input
-      console.log('unlock file');
+      // todo: show progress bar and hide input
+      console.log('unlocked');
+      this.unlockWithRun[ind] = !this.unlockWithRun[ind];
     }
   }
 
@@ -135,8 +135,8 @@ export class SelectionComponent implements OnInit {
     this.router.navigate(['/editor', name]).then(r => console.log('Editor page:' + r));
   }
 
-  reRunAnalysis() {
-    this.reRunFileAnalysis = !this.reRunFileAnalysis;
+  reRunAnalysis(ind) {
+    this.reRunFileAnalysis[ind] = !this.reRunFileAnalysis[ind];
   }
 
   removeTile(el) {

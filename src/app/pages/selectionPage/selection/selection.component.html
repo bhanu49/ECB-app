@@ -18,7 +18,7 @@
     </div>
     <div
       class="col-md-3 tileWrap"
-      *ngFor="let file of displayFiles;"
+      *ngFor="let file of displayFiles; let i = index"
       [attr.data-id]="file.id"
       #tile
     >
@@ -28,13 +28,14 @@
             <div class="unlockAndRunWrap" *ngIf="file.type === 'locked'">
               <button
                 class="btn btn-primary mainGrp"
-                (click)="unlockAndRun()"
-                [hidden]="unlockWithRun"
+                (click)="unlockAndRun(i)"
+                [attr.data-test]="i"
+                [hidden]="unlockWithRun[i]"
               >
                 <fa-icon [icon]="faPlay" size="lg" class="float-left"></fa-icon>
                 Unlock & Run
               </button>
-              <div class="progressWrap" [hidden]="!unlockWithRun">
+              <div class="progressWrap" [hidden]="!unlockWithRun[i]">
                 <form #p="ngForm">
                   <input
                     type="password"
@@ -66,7 +67,7 @@
                       <button
                         type="submit"
                         class="btn btn-success"
-                        (click)="unlockFile(p, file.id)"
+                        (click)="unlockFile(p, file.id, i)"
                         [disabled]="!p.valid"
                       >
                         <fa-icon [icon]="faUnlock" size="lg"></fa-icon>
@@ -81,7 +82,7 @@
                 <fa-icon [icon]="faPlay" size="lg" class="float-left"></fa-icon>
                 Run
               </button>
-              <div class="progressWrap" [hidden]="!runFileAnalysis">
+              <div class="progressWrap" [hidden]="!runFileAnalysis[i]">
                 <div class="progress">
                   <div
                     class="progress-bar"
@@ -132,12 +133,12 @@
             <div class="rerunWrap" *ngIf="file.type === 'analyzed'">
               <button
                 class="btn  btn-outline-dark mainGrp"
-                (click)="reRunAnalysis()"
+                (click)="reRunAnalysis(i)"
               >
                 <fa-icon [icon]="faRedo" size="lg" class="float-left"></fa-icon>
                 Re-Run
               </button>
-              <div class="progressWrap" [hidden]="!reRunFileAnalysis">
+              <div class="progressWrap" [hidden]="!reRunFileAnalysis[i]">
                 <div class="progress">
                   <div
                     class="progress-bar"
