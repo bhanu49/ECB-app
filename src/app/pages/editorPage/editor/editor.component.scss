@@ -1,0 +1,39 @@
+ng-sidebar-container {
+  height: 100vh;
+}
+
+::ng-deep .ng-sidebar {
+  margin-top: 40px !important;
+  background-color: #efefef !important;
+  position: fixed !important;
+}
+
+.tableSection {
+  .infoIcon {
+    color: cornflowerblue;
+  }
+  .bookmark {
+    color: orangered;
+  }
+  .bookmarkWrap {
+    vertical-align: middle;
+  }
+  .unmark {
+    cursor: pointer;
+    color: white;
+    stroke: dodgerblue;
+    stroke-width: 20;
+  }
+  .mark {
+    color: dodgerblue;
+  }
+  .detailsWrap {
+    p {
+      margin: 0;
+    }
+    span{
+      margin-left: 10px;
+      color: dimgray;
+    }
+  }
+}

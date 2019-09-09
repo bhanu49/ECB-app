@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SelectionComponent } from './selectionPage/selection/selection.component';
-import { AboutPageComponent } from './about-page/about-page.component';
-import { LoginComponent } from './login/login.component';
-import { EditorComponent } from './editorPage/editor/editor.component';
+import { SelectionComponent } from './pages/selectionPage/selection/selection.component';
+import { AboutPageComponent } from './pages/about-page/about-page.component';
+import { LoginComponent } from './pages/login/login.component';
+import { EditorComponent } from './pages/editorPage/editor/editor.component';
 
 const routes: Routes = [
   /*{

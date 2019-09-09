@@ -7,15 +7,15 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { FooterComponent } from './selectionPage/footer/footer.component';
+import { FooterComponent } from './pages/selectionPage/footer/footer.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
-import { RemoveComponent } from './selectionPage/remove/remove.component';
-import { EditorComponent } from './editorPage/editor/editor.component';
-import { HeaderComponent } from './editorPage/header/header.component';
-import { EditorFooterComponent } from './editorPage/editor-footer/editor-footer.component';
+import { RemoveComponent } from './pages/selectionPage/remove/remove.component';
+import { EditorComponent } from './pages/editorPage/editor/editor.component';
+import { HeaderComponent } from './pages/editorPage/header/header.component';
+import { EditorFooterComponent } from './pages/editorPage/editor-footer/editor-footer.component';
 import {SidebarModule} from 'ng-sidebar';
-import {SidebarComponent} from './editorPage/sidebar/sidebar.component';
+import {SidebarComponent} from './pages/editorPage/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [

@@ -10,32 +10,45 @@ const multipartMiddleware = multipart({
 
 const files = {
   "dummy file": {
+    id: 1,
     locked: false,
-    key: "1",
+    key: "123456",
     path: "eg path",
     format: "pdf",
     processed: true,
     last_modified: "2019-9-3 19:32:36.435350"
   },
   "dummy file2": {
+    id: 2,
     locked: true,
-    key: "2",
+    key: "123456",
     path: "eg path",
     format: "pdf",
     processed: false,
     last_modified: "2019-9-3 19:32:36.435350"
   },
   "dummy file3": {
+    id: 3,
     locked: false,
-    key: "3",
+    key: "123456",
     path: "eg path",
     format: "pdf",
     processed: false,
     last_modified: "2019-9-3 19:32:36.435350"
   },
   "dummy file4": {
+    id: 4,
     locked: false,
-    key: "3",
+    key: "123456",
+    path: "eg path",
+    format: "pdf",
+    processed: false,
+    last_modified: "2019-9-3 19:32:36.435350"
+  },
+  "dummy file5": {
+    id: 5,
+    locked: true,
+    key: "123456",
     path: "eg path",
     format: "pdf",
     processed: false,
@@ -64,7 +77,12 @@ app.get("/api/files", (req, res) => {
 app.get("/api/selected/name", (req, res) => {
   res.json({
     name: "open this file",
-    text: "i am working"
+    title: "title",
+    date: "12-09-2019",
+    pages: "10",
+    rows: "10",
+    columns: "6",
+    type: "lattice"
   });
 });
 

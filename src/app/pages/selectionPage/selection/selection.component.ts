@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { UploadService } from '../../restUtils/shared/upload.service';
+import {Component , OnInit,  ViewChild} from '@angular/core';
+import { UploadService } from '../../../restUtils/shared/upload.service';
 import { RemoveComponent } from '../remove/remove.component';
 import { map } from 'rxjs/operators';
 
@@ -16,7 +16,7 @@ import {
   faPauseCircle,
   faStopCircle
 } from '@fortawesome/free-solid-svg-icons';
-import { GetSelectedFileService } from '../../restUtils/shared/get-selected-file.service';
+
 import { Router } from '@angular/router';
 
 @Component({
@@ -121,7 +121,14 @@ export class SelectionComponent implements OnInit {
     this.runFileAnalysis = !this.runFileAnalysis;
   }
 
-  unlockFile() {}
+  unlockFile(form, key) {
+    const selectedFile = this.displayFiles.find(x => x.id === key);
+    console.log(form);
+    if (selectedFile.key === form.value.password) {
+      // show progress bar and hide input
+      console.log('unlock file');
+    }
+  }
 
   openFile(name: string) {
     // navigate to editor

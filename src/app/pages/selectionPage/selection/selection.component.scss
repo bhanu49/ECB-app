@@ -43,6 +43,9 @@
     color: cornflowerblue;
   }
   .progressWrap {
+    .progress{
+      width: 115%;
+    }
     .btn {
       margin-top: 4px;
       padding: 2px 5px;
@@ -81,4 +84,10 @@
 
 div.tileWrap:hover .fileOperations {
   display: block;
+}
+
+.unlockAndRunWrap{
+  .password{
+    width: 115%;
+  }
 }
