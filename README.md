@@ -17,5 +17,5 @@ Run `npm run compodoc` for generating documentation. Run ` compodoc -s`  to serv
 Dont forget to start the mock server for the application to display data.
 Get inside the mock server folder  `cd mockServerApi` and then run `node app.js` 
 
-
-
+## CAUTION
+This app requires backend to run, which will be made available on request
