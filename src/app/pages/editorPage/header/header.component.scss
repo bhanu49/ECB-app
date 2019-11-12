@@ -1,15 +1,15 @@
 .editorHeader {
-  /*
-  margin-top: 67px;
-  */
-  h5{
+  background: white;
+  top: auto;
+  z-index: 900 !important;
+  h5 {
     color: rgb(127, 127, 127);
   }
   .col-md-6 {
     padding-top: 10px;
     padding-bottom: 20px;
   }
-  .tableSection{
+  .tableSection {
     background: #fff;
   }
 }

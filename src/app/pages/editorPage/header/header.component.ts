@@ -1,6 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { EditorComponent } from '../editor/editor.component';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +14,8 @@ import { EditorComponent } from '../editor/editor.component';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  @ViewChild(EditorComponent, { static: false }) editorComponent: EditorComponent;
+  @Output() searchStr = new EventEmitter<string>();
+  @Input() public displayAttr;
 
   faSearch = faSearch;
 
@@ -17,6 +24,6 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {}
 
   startSearch(value: string) {
-    this.editorComponent.searchPdf(value);
+    this.searchStr.next(value);
   }
 }

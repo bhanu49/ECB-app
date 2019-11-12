@@ -1,119 +1,124 @@
 <ng-sidebar-container>
   <ng-sidebar
-    [(opened)]="opened"
+    [(opened)]="opened[tableInd]"
     mode="push"
     autoCollapseWidth="200"
     class="asideWrap"
   >
-    <app-sidebar></app-sidebar>
+    <app-sidebar [tableID]="tableInd" [tableArray]="selectedTbl" (reloadComponent)="initializeComponent(name)"></app-sidebar>
   </ng-sidebar>
 
   <!-- Page content -->
   <div ng-sidebar-content>
-    <app-header></app-header>
+    <app-header
+      (searchStr)="searchPdf($event)"
+      [displayAttr]="opened"
+    ></app-header>
 
-    <div class="container-fluid">
+    <div
+      class="container-fluid"
+      [ngStyle]="{ 'padding-top': opened ? '0' : '67px' }"
+    >
       <div class="row sectionWrap">
         <div class="col-md-6 pageSection">
           <div class="content">
-            <pdf-viewer #pdfViewer
-              [src]="pdfSrc"
+            <pdf-viewer
+              #pdfViewer
+              [src]="pdfData"
               [render-text]="true"
               [original-size]="false"
-              [autoresize]="true"
+              [autoresize]="false"
               (after-load-complete)="afterLoadComplete($event)"
+              (page-rendered)="pageRendered($event)"
+              style="display: block;"
             ></pdf-viewer>
           </div>
-          <button (click)="toggleSidebar()">Toggle sidebar</button>
         </div>
         <div class="col-md-6 tableSection">
           <div class="content">
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col" class="w-15 text-center bookmarkWrap">
-                    <fa-icon
-                      [icon]="faBookmark"
-                      size="lg"
-                      [ngClass]="status ? 'unmark' : 'mark'"
-                      (click)="markForExport()"
-                    ></fa-icon>
-                  </th>
-                  <th scope="col">
-                    <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">First</th>
-                          <th scope="col">Last</th>
-                          <th scope="col">Handle</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <th scope="row">1</th>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">3</th>
-                          <td colspan="2">Larry the Bird</td>
-                          <td>@twitter</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th>
-                    <fa-icon
-                      [icon]="faInfo"
-                      size="lg"
-                      class="infoIcon"
-                    ></fa-icon>
-                  </th>
-                  <td colspan="2">
-                    <div class="row detailsWrap">
-                      <div class="col-md-6 ">
-                        <p>
-                          Title: <span>{{ title }}</span>
-                        </p>
-                        <p>
-                          Date: <span>{{ date }}</span>
-                        </p>
-                        <p>
-                          Pages in Documents: <span>{{ pages }}</span>
-                        </p>
-                      </div>
-                      <div class="col-md-6">
-                        <p>
-                          Number of rows: <span>{{ rowCount }}</span>
-                        </p>
-                        <p>
-                          Number of rows: <span>{{ columnCount }}</span>
-                        </p>
-                        <p>
-                          Form Type: <span>{{ formType }}</span>
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div id="container"></div>
+            <ul>
+              <li
+                *ngFor="let table of tableData ? tableData : []; let i = index"
+                [attr.data-table-id]="table.table_id"
+                [className]="table.page"
+              >
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="w-15 text-center bookmarkWrap">
+                        <fa-icon
+                          [icon]="faBookmark"
+                          size="lg"
+                          [ngClass]="!status[i] ? 'unmark' : 'mark'"
+                          (click)="markForExport(i, table.table_id)"
+                        ></fa-icon>
+                      </th>
+                      <th scope="col">
+                        <div
+                          [ngClass]="!status[i] ? '' : 'innerTableWrap'"
+                          (click)="toggleSidebar(i, table.table_id)"
+                          [id]="table.table_id"
+                        >
+                          <!--render table here -->
+                          <div
+                            [innerHTML]="table.data_frame_html | safeHtml"
+                          ></div>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th>
+                        <fa-icon
+                          [icon]="faInfo"
+                          size="lg"
+                          class="infoIcon"
+                        ></fa-icon>
+                      </th>
+                      <td colspan="2">
+                        <div class="row detailsWrap">
+                          <div class="col-md-6 ">
+                            <p>
+                              Title: <span>{{ table.title }}</span>
+                            </p>
+                            <p>
+                              Date: <span>{{ table.Date_table_edited }}</span>
+                            </p>
+                            <p>
+                              Page in Document: <span>{{ table.page }}</span>
+                            </p>
+                          </div>
+                          <div class="col-md-6">
+                            <p>
+                              Number of rows:
+                              <span>{{ table.number_of_rows }}</span>
+                            </p>
+                            <p>
+                              Number of columns:
+                              <span>{{ table.number_of_columns }}</span>
+                            </p>
+                            <p>
+                              Form Type: <span>{{ table.form_type }}</span>
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
-    <app-editor-footer></app-editor-footer>
+    <app-editor-footer
+      [tables]="markedTables"
+      [allTables]="allTables"
+      [status]="status"
+      [tableCount] ="tableCount"
+    ></app-editor-footer>
   </div>
 </ng-sidebar-container>

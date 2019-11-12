@@ -1,19 +1,33 @@
 .sidebarWrap {
   padding: 40px;
-  .editor{
+  margin-top: 74px;
+  //margin-bottom: 110px;
+  .editor {
     margin-top: 10px;
-    form{
+    form {
       max-width: 300px;
     }
   }
-  .textBox{
-    label{
+  .form-group {
+    margin-top: 30px; //remove when background is added
+  }
+  .textBox {
+    label {
       max-width: 300px;
       text-align: justify-all;
     }
-    .textAreaBtn{
+    .textAreaBtn {
       margin-top: 10px;
     }
   }
-}
 
+  .colorPicker {
+    color: orangered;
+  }
+
+  .editorActions{
+    button{
+      margin-right: 5px;
+    }
+  }
+}

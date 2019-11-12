@@ -1,57 +1,109 @@
 <div class="container">
-  <div class="row fileSelectWrap">
-    <div class="col-md-2">
-      <div class="tile" id="addNewFile">
-        <div class="addIcon">
-          <input
-            style="display: none"
-            type="file"
-            (change)="onFileChange($event)"
-            accept="application/pdf"
-            #fileInput
-          />
-          <button class="btn uploadBtn" (click)="fileInput.click()">
-            <fa-icon [icon]="faPlus" size="3x" id="icon"></fa-icon>
-          </button>
+  <div class="selectPage">
+    <div class="row fileSelectWrap">
+      <div class="col-md-2">
+        <div class="tile" id="addNewFile">
+          <div class="addIcon">
+            <input
+              style="display: none"
+              type="file"
+              (change)="onFileChange($event.target.files)"
+              accept="application/pdf"
+              #fileInput
+              multiple
+            />
+            <button class="btn uploadBtn" (click)="fileInput.click()">
+              <fa-icon [icon]="faPlus" size="3x" id="icon"></fa-icon>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-    <div
-      class="col-md-3 tileWrap"
-      *ngFor="let file of displayFiles; let i = index"
-      [attr.data-id]="file.id"
-      #tile
-    >
-      <div class="row">
-        <div class="col-md-6">
-          <div class="fileOperations">
-            <div class="unlockAndRunWrap" *ngIf="file.type === 'locked'">
-              <button
-                class="btn btn-primary mainGrp"
-                (click)="unlockAndRun(i)"
-                [attr.data-test]="i"
-                [hidden]="unlockWithRun[i]"
-              >
-                <fa-icon [icon]="faPlay" size="lg" class="float-left"></fa-icon>
-                Unlock & Run
-              </button>
-              <div class="progressWrap" [hidden]="!unlockWithRun[i]">
-                <form #p="ngForm">
-                  <input
-                    type="password"
-                    class="form-control form-control-sm password"
-                    placeholder="Password"
-                    name="password"
-                    ngModel
-                    required=""
-                    minlength="5"
-                  />
-                  <small *ngIf="invalidPw[i]" class="help-block"> Invalid Password</small>
+      <div
+        class="col-md-3 tileWrap"
+        *ngFor="let file of displayFiles; let i = index"
+        [attr.data-id]="file.id"
+        #tile
+      >
+        <div class="row">
+          <div class="col-md-6">
+            <div class="fileOperations">
+              <div class="unlockAndRunWrap" *ngIf="file.type === 'locked'">
+                <button
+                  class="btn btn-primary mainGrp analyse"
+                  (click)="unlockAndRun(i)"
+                  [attr.data-test]="i"
+                  [hidden]="unlockWithRun[i]"
+                >
+                  <fa-icon
+                    [icon]="faPlay"
+                    size="lg"
+                    class="float-left"
+                  ></fa-icon>
+                  Unlock & Run
+                </button>
+                <div class="progressWrap" [hidden]="!unlockWithRun[i]">
+                  <form #p="ngForm">
+                    <input
+                      type="password"
+                      class="form-control form-control-sm password"
+                      placeholder="Password"
+                      name="password"
+                      ngModel
+                      [hidden]="showProgressBar[i]"
+                    />
+                   <!-- <small *ngIf="invalidPw[i]" class="help-block">
+                      Invalid Password</small
+                    >-->
+                    <div class="progress" [hidden]="!showProgressBar[i]">
+                      <div
+                        class="progress-bar progress-bar-striped progress-bar-animated"
+                        role="progressbar"
+                        [style.width]="progressFeedback + '%'"
+                        aria-valuenow="25"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      ></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4"></div>
+                      <div class="col-md-4">
+                        <button class="btn btn-danger">
+                          <fa-icon [icon]="faPause" size="lg"></fa-icon>
+                        </button>
+                      </div>
+                      <div class="col-md-4">
+                        <button
+                          type="submit"
+                          class="btn btn-success"
+                          (click)="unlockFileWithRun(p, file.id, i, file.name)"
+                          [disabled]="!p.valid"
+                        >
+                          <fa-icon [icon]="faUnlock" size="lg"></fa-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="runWrap" *ngIf="file.type === 'newFile'">
+                <button
+                  class="btn btn-primary mainGrp"
+                  (click)="runAnalysis(i, file.name, file.id)"
+                  [hidden]="runFileAnalysis[i]"
+                >
+                  <fa-icon
+                    [icon]="faPlay"
+                    size="lg"
+                    class="float-left"
+                  ></fa-icon>
+                  Run
+                </button>
+                <div class="progressWrap" [hidden]="!runFileAnalysis[i]">
                   <div class="progress">
                     <div
-                      class="progress-bar"
+                      class="progress-bar progress-bar-striped progress-bar-animated"
                       role="progressbar"
-                      style="width: 25%"
+                      [style.width]="progressFeedback + '%'"
                       aria-valuenow="25"
                       aria-valuemin="0"
                       aria-valuemax="100"
@@ -60,145 +112,174 @@
                   <div class="row">
                     <div class="col-md-4"></div>
                     <div class="col-md-4">
-                      <button class="btn btn-danger">
+                      <button class="btn btn-primary">
                         <fa-icon [icon]="faPause" size="lg"></fa-icon>
                       </button>
                     </div>
                     <div class="col-md-4">
-                      <button
-                        type="submit"
-                        class="btn btn-success"
-                        (click)="unlockFile(p, file.id, i)"
-                        [disabled]="!p.valid"
-                      >
-                        <fa-icon [icon]="faUnlock" size="lg"></fa-icon>
+                      <button class="btn btn-danger">
+                        <fa-icon [icon]="faStop" size="lg"></fa-icon>
                       </button>
                     </div>
                   </div>
-                </form>
-              </div>
-            </div>
-            <div class="runWrap" *ngIf="file.type === 'newFile'">
-              <button class="btn btn-primary mainGrp" (click)="runAnalysis()">
-                <fa-icon [icon]="faPlay" size="lg" class="float-left"></fa-icon>
-                Run
-              </button>
-              <div class="progressWrap" [hidden]="!runFileAnalysis[i]">
-                <div class="progress">
-                  <div
-                    class="progress-bar"
-                    role="progressbar"
-                    style="width: 25%"
-                    aria-valuenow="25"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  ></div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4"></div>
-                  <div class="col-md-4">
-                    <button class="btn btn-primary">
-                      <fa-icon [icon]="faPause" size="lg"></fa-icon>
-                    </button>
-                  </div>
-                  <div class="col-md-4">
-                    <button class="btn btn-danger">
-                      <fa-icon [icon]="faStop" size="lg"></fa-icon>
-                    </button>
-                  </div>
                 </div>
               </div>
-            </div>
-            <div
-              class="unlockWrap"
-              *ngIf="file.type === 'locked' && !unlockWithRun[i]"
-            >
-              <button class="btn  btn-outline-dark mainGrp">
-                <fa-icon
-                  [icon]="faUnlock"
-                  size="lg"
-                  class="float-left"
-                ></fa-icon>
-                Unlock
-              </button>
-            </div>
-            <div class="analyzedWrap" *ngIf="file.type === 'analyzed'">
-              <button
-                class="btn btn-primary mainGrp"
-                (click)="openFile(file.name)"
+              <div
+                class="unlockWrap"
+                *ngIf="file.type === 'locked' && !unlockWithRun[i]"
               >
-                <fa-icon [icon]="faOpen" size="lg" class="float-left"></fa-icon>
-                Open
-              </button>
-            </div>
-            <div class="rerunWrap" *ngIf="file.type === 'analyzed'">
-              <button
-                class="btn  btn-outline-dark mainGrp"
-                (click)="reRunAnalysis(i)"
-              >
-                <fa-icon [icon]="faRedo" size="lg" class="float-left"></fa-icon>
-                Re-Run
-              </button>
-              <div class="progressWrap" [hidden]="!reRunFileAnalysis[i]">
-                <div class="progress">
-                  <div
-                    class="progress-bar"
-                    role="progressbar"
-                    style="width: 25%"
-                    aria-valuenow="25"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  ></div>
+                <button
+                  class="btn  btn-outline-dark mainGrp"
+                  (click)="unlockPdf(i)"
+                  [hidden]="unlock[i]"
+                >
+                  <fa-icon
+                    [icon]="faUnlock"
+                    size="lg"
+                    class="float-left"
+                  ></fa-icon>
+                  Unlock
+                </button>
+                <div class="progressWrap" [hidden]="!unlock[i]">
+                  <form #u="ngForm">
+                    <input
+                      type="password"
+                      class="form-control form-control-sm password"
+                      placeholder="Password"
+                      name="password"
+                      ngModel
+                      minlength="6"
+                      [hidden]="showProgressBar[i]"
+                    />
+                    <small *ngIf="invalidPw[i]" class="help-block">
+                      Invalid Password</small
+                    >
+                    <div class="progress" [hidden]="!showProgressBar[i]">
+                      <div
+                        class="progress-bar progress-bar-striped progress-bar-animated"
+                        role="progressbar"
+                        [style.width]="progressFeedback + '%'"
+                        aria-valuenow="25"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      ></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4"></div>
+                      <div class="col-md-4">
+                        <button class="btn btn-danger">
+                          <fa-icon [icon]="faPause" size="lg"></fa-icon>
+                        </button>
+                      </div>
+                      <div class="col-md-4">
+                        <button
+                          type="submit"
+                          class="btn btn-success"
+                          (click)="unlockFile(u, file.id, i, file.name)"
+                          [disabled]="!u.valid"
+                        >
+                          <fa-icon [icon]="faUnlock" size="lg"></fa-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
                 </div>
-                <div class="row">
-                  <div class="col-md-4"></div>
-                  <div class="col-md-4">
-                    <button class="btn btn-primary">
-                      <fa-icon [icon]="faPause" size="lg"></fa-icon>
-                    </button>
+
+              </div>
+              <div class="analyzedWrap" *ngIf="file.type === 'analyzed'">
+                <button
+                  class="btn btn-primary mainGrp"
+                  (click)="openFile(file.name)"
+                >
+                  <fa-icon
+                    [icon]="faOpen"
+                    size="lg"
+                    class="float-left"
+                  ></fa-icon>
+                  Open
+                </button>
+              </div>
+              <!--
+              <div class="rerunWrap" *ngIf="file.type === 'analyzed'">
+                <button
+                  class="btn  btn-outline-dark mainGrp"
+                  (click)="reRunAnalysis(i, file.name, file.id)"
+                  [hidden]="reRunFileAnalysis[i]"
+                >
+                  <fa-icon
+                    [icon]="faRedo"
+                    size="lg"
+                    class="float-left"
+                  ></fa-icon>
+                  Re-Run
+                </button>
+                <div class="progressWrap" [hidden]="!reRunFileAnalysis[i]">
+                  <div class="progress">
+                    <div
+                      class="progress-bar"
+                      role="progressbar"
+                      [style.width]="progressFeedback + '%'"
+                      aria-valuenow="25"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
                   </div>
-                  <div class="col-md-4">
-                    <button class="btn btn-danger">
-                      <fa-icon [icon]="faStop" size="lg"></fa-icon>
-                    </button>
+                  <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                      <button class="btn btn-primary">
+                        <fa-icon [icon]="faPause" size="lg"></fa-icon>
+                      </button>
+                    </div>
+                    <div class="col-md-4">
+                      <button class="btn btn-danger">
+                        <fa-icon [icon]="faStop" size="lg"></fa-icon>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="removeWrap">
-              <button
-                class="btn btn-danger remove mainGrp"
-                (click)="removeTile($event)"
-                [attr.data-tile-id]="file.id"
-              >
-                <fa-icon
-                  [icon]="faTrash"
-                  size="lg"
-                  class="float-left"
-                ></fa-icon>
-                Remove
-              </button>
+-->
+              <div class="removeWrap">
+                <button
+                  class="btn btn-danger remove mainGrp"
+                  (click)="removeTile($event)"
+                  [attr.data-tile-id]="file.id"
+                >
+                  <fa-icon
+                    [icon]="faTrash"
+                    size="lg"
+                    class="float-left"
+                  ></fa-icon>
+                  Remove
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="col-md-6">
-          <div class="fileWrap">
-            <div class="fileIcon">
-              <fa-icon
-                [icon]="file.icon"
-                size="4x"
-                [className]="file.type"
-              ></fa-icon>
-            </div>
-            <div class="fileName">
-              {{ file.name | titlecase }}
+          <div class="col-md-6">
+            <div class="fileWrap">
+              <div class="fileIcon">
+                <fa-icon
+                  [icon]="file.icon"
+                  size="4x"
+                  [className]="file.type"
+                ></fa-icon>
+              </div>
+              <div class="fileName">
+                <small>{{ file.name | titlecase }}</small>
+              </div>
+              <div class="lastRan">
+                <small>
+                  Last Ran: {{ file.last_modified | date: "dd/MM/yyyy" }}
+                </small>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <app-remove [tileId]="tileId" [allFiles]="displayFiles"></app-remove>
   </div>
-  <app-remove [tileId]="tileId"></app-remove>
 </div>
-<app-footer></app-footer>
+<app-footer [fileList]="displayFiles"></app-footer>

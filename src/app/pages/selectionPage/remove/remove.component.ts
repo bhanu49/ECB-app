@@ -1,6 +1,10 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {ModalDismissReasons, NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import { UploadService } from '../../../restUtils/shared/upload.service';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  ModalDismissReasons,
+  NgbModal,
+  NgbModalRef
+} from '@ng-bootstrap/ng-bootstrap';
+import { RestService } from '../../../restUtils/shared/rest.service';
 
 @Component({
   selector: 'app-remove',
@@ -8,13 +12,16 @@ import { UploadService } from '../../../restUtils/shared/upload.service';
   styleUrls: ['./remove.component.scss']
 })
 export class RemoveComponent implements OnInit {
+  fileName: string;
   @ViewChild('removeModal', { static: true }) public removeModal;
 
   @Input() public tileId;
+  @Input() public allFiles;
+
   private closeModal: string;
   private modalReference: NgbModalRef;
 
-  constructor(private upSvc: UploadService, private modalService: NgbModal) {}
+  constructor(private restUtils: RestService, private modalService: NgbModal) {}
 
   private static getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -30,23 +37,35 @@ export class RemoveComponent implements OnInit {
 
   show() {
     this.modalReference = this.modalService.open(this.removeModal, {
-        centered: true
-      });
+      centered: true
+    });
     this.modalReference.result.then(
-        result => {
-          this.closeModal = `Closed with: ${result}`;
-        },
-        reason => {
-          this.closeModal = `Dismissed ${RemoveComponent.getDismissReason(
-            reason
-          )}`;
-        }
-      );
+      result => {
+        this.closeModal = `Closed with: ${result}`;
+      },
+      reason => {
+        this.closeModal = `Dismissed ${RemoveComponent.getDismissReason(
+          reason
+        )}`;
+      }
+    );
   }
 
   removeTile($event: MouseEvent) {
-    document.body.querySelector('.tileWrap[data-id="' + this.tileId + '"]').remove();
+    document.body
+      .querySelector('.tileWrap[data-id="' + this.tileId + '"]')
+      .remove();
     this.modalReference.close('successfully removed');
-    // todo: api call to remove analysis form backend
+    this.allFiles.forEach((el, ind) => {
+      if (Number(this.tileId) === el.id) {
+        this.fileName = el.name;
+      }
+    });
+
+    this.restUtils
+      .deleteFile(this.fileName)
+      .subscribe(data => {
+       // alert(data);
+      });
   }
 }

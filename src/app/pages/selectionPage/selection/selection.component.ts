@@ -1,23 +1,27 @@
-import {Component , OnInit,  ViewChild} from '@angular/core';
-import { UploadService } from '../../../restUtils/shared/upload.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { RestService } from '../../../restUtils/shared/rest.service';
 import { RemoveComponent } from '../remove/remove.component';
-import { map } from 'rxjs/operators';
+import { catchError, finalize, map } from 'rxjs/operators';
 
 import {
-  faPlus,
-  faFilePdf,
-  faLock,
   faChartLine,
-  faPlayCircle,
-  faRedo,
-  faTrashAlt,
-  faUnlock,
+  faFilePdf,
   faFolderOpen,
+  faLock,
   faPauseCircle,
-  faStopCircle
+  faPlayCircle,
+  faPlus,
+  faRedo,
+  faStopCircle,
+  faTrashAlt,
+  faUnlock
 } from '@fortawesome/free-solid-svg-icons';
 
 import { Router } from '@angular/router';
+import { HttpEventType } from '@angular/common/http';
+import { forkJoin, of, throwError } from 'rxjs';
+import { Tile } from './tile';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-selection',
@@ -42,46 +46,58 @@ export class SelectionComponent implements OnInit {
   unlockWithRun = [];
   runFileAnalysis = [];
   reRunFileAnalysis = [];
+  public tileModel: Tile;
 
-  private selectedFile: File = null;
-  private tileId: number;
-  public tileInd: number;
+  public tileId: number;
   invalidPw = [];
-  constructor(
-    private upSvc: UploadService,
-    private router: Router
-  ) {}
+  showProgressBar = [];
+  progressFeedback: number;
+  private progressBar: any;
+  unlock = [];
+  constructor(private restUtils: RestService, private router: Router) {}
 
   ngOnInit() {
-    this.upSvc
+    this.restUtils
       .getFilesData()
       .pipe(
         map(resp => {
+          // console.log(resp);
           const fileData = [];
+          let ind = 0;
           for (const key in resp) {
+            ind++;
             const i = resp[key];
-            if (!i.locked && i.processed) {
+            if (i.locked && !i.processed) {
               fileData.push({
                 ...i,
-                icon: this.faPdf,
+                icon: this.faLock,
                 name: key,
-                type: 'newFile'
+                type: 'locked',
+                id: ind
               });
-            }
-            if (i.locked && !i.processed) {
+            } else if (!i.locked && i.processed) {
+              fileData.push({
+                ...i,
+                icon: this.faChart,
+                name: key,
+                type: 'analyzed',
+                id: ind
+              });
+            } else if (i.locked && i.processed) {
               fileData.push({
                 ...resp[key],
                 icon: this.faLock,
                 name: key,
-                type: 'locked'
+                type: 'locked',
+                id: ind
               });
-            }
-            if (!i.processed && !i.locked) {
+            } else if (!i.processed && !i.locked) {
               fileData.push({
                 ...resp[key],
-                icon: this.faChart,
+                icon: this.faPdf,
                 name: key,
-                type: 'analyzed'
+                id: ind,
+                type: 'newFile'
               });
             }
           }
@@ -89,63 +105,217 @@ export class SelectionComponent implements OnInit {
         })
       )
       .subscribe(response => {
+        // console.log(response);
         this.displayFiles = response;
       });
   }
 
-  onFileChange(event) {
-    this.selectedFile = event.target.files[0] as File;
-    this.uploadFile();
-  }
+  /**
+   * fetches the user selected file
+   * @param files
+   */
+  onFileChange(files: FileList) {
+    const requests = [];
 
-  uploadFile() {
-    const uploadData = new FormData();
-    uploadData.append('uploadFile', this.selectedFile, this.selectedFile.name);
+    // this.uploadFile(files[i])
+    for (let i = 0; i < files.length; i++) {
+      requests.push(this.restUtils.postUploadedFile(files[i]));
+    }
 
-    const data = {
-      icon: this.faPdf,
-      name: this.selectedFile.name,
-      lastRan: '',
-      type: 'newFile',
-      key: Math.floor(Math.random() * 100)
-    };
+    this.tileModel = new Tile();
 
-    this.displayFiles.push(data);
-    this.upSvc.postUploadedFile('/api/upload', uploadData);
+    forkJoin([...requests]).subscribe(
+      results => {
+        for (const resp of results) {
+          this.addTile(resp);
+        }
+      },
+      catchError(err => {
+        alert(err.message);
+        return throwError(err);
+      })
+    );
   }
 
   unlockAndRun(ind) {
     this.unlockWithRun[ind] = !this.unlockWithRun[ind];
   }
 
-  runAnalysis(ind) {
-    this.runFileAnalysis[ind] = !this.runFileAnalysis[ind];
-  }
+  unlockFileWithRun(form, id, ind, filename) {
+    const selectedFile = this.displayFiles.find(x => x.id === id);
+    selectedFile.key = form.value.password;
 
-  unlockFile(form, key, ind) {
-    const selectedFile = this.displayFiles.find(x => x.id === key);
-    if (selectedFile.key === form.value.password) {
-      // todo: show progress bar in sync with api req
-      console.log('unlocked');
-      this.unlockWithRun[ind] = !this.unlockWithRun[ind];
-      this.invalidPw[ind] = false;
-    } else {
-      this.invalidPw[ind] = true;
-    }
+    this.restUtils
+      .addKeyToFile(filename, form.value.password)
+      .pipe(
+        catchError(err => {
+          alert(err.message);
+          this.unlockWithRun[ind] = !this.unlockWithRun[ind];
+          return throwError(err);
+        })
+      )
+      .subscribe(resp => {
+        // console.log(resp);
+        this.restUtils
+          .runFile(filename)
+          .pipe(
+            catchError(err => {
+              alert(err.message);
+              return throwError(err);
+            })
+          )
+          .subscribe(el => {
+            if (el.type === HttpEventType.DownloadProgress) {
+              // console.log(Math.round(resp.loaded / resp.total * 100));
+            } else if (el.type === HttpEventType.Response) {
+              if (el.status === 201 || el.status === 200) {
+                this.progressFeedback = 101;
+              } else {
+                alert('Run failed');
+              }
+            }
+          });
+      });
+
+    this.progressBar = this.progressAnimate(id, 'unlock', ind);
+    this.showProgressBar[ind] = true;
   }
 
   openFile(name: string) {
     // navigate to editor
-    this.router.navigate(['/editor', name]).then(r => console.log('Editor page:' + r));
+    this.router
+      .navigate(['/editor', name])
+      .then(r => console.log('Editor page:' + r));
   }
 
-  reRunAnalysis(ind) {
+  runAnalysis(ind: number, name: string, id: number) {
+    this.runFileAnalysis[ind] = !this.runFileAnalysis[ind];
+    this.restUtils
+      .runFile(name)
+      .pipe(
+        catchError(err => {
+          alert(err.message);
+          this.runFileAnalysis[ind] = !this.runFileAnalysis[ind];
+          return throwError(err);
+        })
+      )
+      .subscribe(resp => {
+        if (resp.type === HttpEventType.DownloadProgress) {
+          // console.log(Math.round(resp.loaded / resp.total * 100));
+        } else if (resp.type === HttpEventType.Response) {
+          if (resp.status === 201 || resp.status === 200) {
+            this.progressFeedback = 101;
+          } else {
+            this.runFileAnalysis[ind] = !this.runFileAnalysis[ind];
+            alert('Run failed');
+          }
+        }
+      });
+    this.progressBar = this.progressAnimate(id, 'run', ind);
+  }
+
+  reRunAnalysis(ind: number, name: string, id: number) {
     this.reRunFileAnalysis[ind] = !this.reRunFileAnalysis[ind];
+    this.restUtils.runFile(name).subscribe(resp => {
+      console.log(resp);
+    });
+    this.progressBar = this.progressAnimate(id, 'rerun', ind);
   }
 
   removeTile(el) {
     // get the id of tile and pass it to remove component
     this.tileId = el.target.getAttribute('data-tile-id');
     this.removeModal.show();
+  }
+
+  changeTile(id: number, type: string, tileInd: number) {
+    if (type === 'rerun') {
+      this.reRunFileAnalysis[tileInd] = !this.reRunFileAnalysis[tileInd];
+    } else {
+      this.displayFiles.forEach((el, ind) => {
+        if (id === el.id) {
+          switch (type) {
+            case 'rerun': {
+              el.icon = this.faChart;
+              el.type = 'analyzed';
+              break;
+            }
+            case 'newFile': {
+              el.icon = this.faPdf;
+              el.type = 'newFile';
+              break;
+            }
+            case 'unlock': {
+              el.icon = this.faPdf;
+              el.type = 'newFile';
+              break;
+            }
+            case 'run': {
+              el.icon = this.faChart;
+              el.type = 'analyzed';
+              break;
+            }
+          }
+        }
+      });
+    }
+  }
+
+  progressAnimate(id, type: string, ind) {
+    const self = this;
+    this.progressFeedback = 10;
+    const t = setInterval(() => {
+      if (self.progressFeedback < 90) {
+        self.progressFeedback = (++self.progressFeedback % 360) + 1;
+      } else if (self.progressFeedback > 100) {
+        this.changeTile(id, type, ind);
+        clearInterval(t);
+      }
+    }, 100);
+  }
+
+  unlockPdf(i: number) {
+    this.unlock[i] = !this.unlock[i];
+  }
+
+  unlockFile(u: NgForm, id: any, i: number, name: any) {
+    const selectedFile = this.displayFiles.find(x => x.id === id);
+    if (selectedFile.key === u.value.password) {
+      this.invalidPw[i] = false;
+      this.showProgressBar[i] = true;
+      this.progressBar = this.progressAnimate(id, 'newFile', i);
+      this.progressFeedback = 101;
+    } else {
+      this.invalidPw[i] = true;
+    }
+  }
+
+  addTile(resp) {
+    if (resp.status === 200 || resp.status === 201) {
+      const body = JSON.parse(resp.body);
+      const fileName = Object.keys(body);
+      if (!body.locked && body.processed) {
+        this.tileModel.icon = this.faLock;
+        this.tileModel.type = 'locked';
+      } else if (body.locked && !body.processed) {
+        this.tileModel.icon = this.faChart;
+        this.tileModel.type = 'analyzed';
+      } else if (body.processed && body.locked) {
+        this.tileModel.icon = this.faLock;
+        this.tileModel.type = 'locked';
+      } else if (!body.processed && !body.locked) {
+        this.tileModel.icon = this.faPdf;
+        this.tileModel.type = 'newFile';
+      }
+      this.tileModel.id = Math.floor(Math.random() * 100);
+      this.tileModel.name = fileName[0];
+      this.tileModel.key = body.key;
+      this.tileModel.last_modified = body.last_modified;
+
+      // console.log(this.displayFiles);
+      this.displayFiles.push(this.tileModel);
+    } else {
+      alert('upload failed');
+    }
   }
 }

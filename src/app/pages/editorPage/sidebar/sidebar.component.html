@@ -1,48 +1,95 @@
 <div class="sidebarWrap">
   <h6 class="text-center">Tracing Inspector</h6>
   <h6>Header</h6>
-  <div class="form-check">
-    <input class="form-check-input" type="checkbox" id="headerCheck" />
-    <label class="form-check-label" for="headerCheck">
-      Default checkbox
-    </label>
-  </div>
 
   <div class="editor">
-    <form>
+    <form #tracer="ngForm" (ngSubmit)="rerunFileAnalysis(tracer)">
+      <div class="form-row" style="margin-bottom: 10px">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="isFirstLine"
+            name="isFirstLine"
+            [ngModel]="tableArray.Is_first_line_of_table"
+          />
+          <label class="form-check-label" for="isFirstLine">
+            Is first line of table
+          </label>
+        </div>
+      </div>
+
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="columns">Columns</label>
           <input
-            type="email"
+            type="text"
             class="form-control form-control-sm"
             id="columns"
+            name="colNum"
+            [(ngModel)]="tableArray.number_of_columns"
           />
         </div>
         <div class="form-group col-md-6">
           <label for="rows">Rows</label>
           <input
-            type="password"
+            type="text"
             class="form-control form-control-sm"
             id="rows"
+            [(ngModel)]="tableArray.number_of_rows"
+            name="rowNum"
           />
         </div>
       </div>
-      <div class="form-group">
+     <!-- <div class="form-group">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" />
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="lineSep"
+            [ngModel]="tableArray.form_type === 'stream'"
+          />
           <label class="form-check-label">
-            Check me out
+            Horizontal Line Separation
           </label>
         </div>
       </div>
       <div class="form-group">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="verticalSep"
+            [ngModel]="tableArray.form_type === 'lattice'"
+          />
+          <label class="form-check-label">
+            Vertical Separation
+          </label>
+        </div>
+      </div>-->
+      <!--<div class="form-group">
         <label for="lineColor">Line Color</label>
-        <input
-          type="text"
-          class="form-control form-control-sm"
-          id="lineColor"
-        />
+
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            id="lineColor"
+            readonly
+            class="form-control form-control-sm"
+            [style.background]="color1"
+            [(colorPicker)]="color1"
+            (colorPickerOpen)="changeLineClr('colorPickerOpen', $event)"
+            (colorPickerClose)="changeLineClr('colorPickerClose', $event)"
+            (cpInputChange)="changeLineClr('cpInputChange', $event)"
+            (cpSliderDragStart)="changeLineClr('cpSliderDragStart', $event)"
+            (cpSliderDragEnd)="changeLineClr('cpSliderDragEnd', $event)"
+            name="lineColor"
+            ngModel
+          />
+          &lt;!&ndash;<div class="input-group-append">
+            <fa-icon [icon]="faEyeDropper"  class="colorPicker" size="1x"></fa-icon>
+          </div>&ndash;&gt;
+        </div>
       </div>
       <div class="form-group">
         <label for="backgroundClr"> Background Color</label>
@@ -50,40 +97,49 @@
           type="text"
           class="form-control form-control-sm"
           id="backgroundClr"
+          readonly
+          [style.background]="color2"
+          [(colorPicker)]="color2"
+          (colorPickerOpen)="changeBackgroundClr('colorPickerOpen', $event)"
+          (colorPickerClose)="changeBackgroundClr('colorPickerClose', $event)"
+          (cpInputChange)="changeBackgroundClr('cpInputChange', $event)"
+          (cpSliderDragStart)="changeBackgroundClr('cpSliderDragStart', $event)"
+          (cpSliderDragEnd)="changeBackgroundClr('cpSliderDragEnd', $event)"
+          name="backgroundColor"
+          ngModel
         />
-      </div>
+      </div>-->
 
       <div class="form-group">
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="radioGrp"
-            id="stream"
-            value="option1"
-          />
-          <label class="form-check-label" for="stream">Stream</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="radioGrp"
-            id="lattice"
-            value="option2"
-          />
-          <label class="form-check-label" for="lattice">Lattice</label>
+        <div class="form-check form-check-inline" *ngFor="let el of type">
+          <label>
+            <input
+              class="form-check-input"
+              type="radio"
+              name="streamType"
+              [value]="el"
+              [ngModel]="tableArray.form_type"
+            />
+            {{ el | lineSep | titlecase }}
+          </label>
         </div>
       </div>
+
       <div class="editorActions">
         <div class="form-row">
-          <div class="form-group col-md-3"></div>
-          <div class="form-group col-md-6">
-            <button class="btn btn-outline-dark btn-sm">Add Tracing Box</button>
-          </div>
-          <div class="form-group col-md-3">
-            <button class="btn btn-primary btn-sm">Re-Run</button>
-          </div>
+            <button
+              class="btn btn-outline-dark btn-sm"
+              (click)="addTracingBox($event)"
+            >
+              Add Box
+            </button>
+            <button
+              class="btn btn-outline-dark btn-sm"
+              (click)="editTracingBox($event)"
+            >
+              Edit Box
+            </button>
+            <button class="btn btn-primary btn-sm" type="submit">Re-Run</button>
         </div>
       </div>
     </form>
@@ -100,7 +156,8 @@
       <span>
         <a href="#">Click here</a>
       </span>
-      to get a helpful tracing guide!</label>
+      to get a helpful tracing guide!</label
+    >
     <textarea class="form-control" id="textArea" rows="3"></textarea>
 
     <div class="textAreaBtn float-right">

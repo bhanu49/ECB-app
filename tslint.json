@@ -90,5 +90,6 @@
     "codelyzer"
   ],
   "array-bracket-spacing": [true, "always"],
-  "whitespace": [true, "check-module"]
+  "whitespace": [true, "check-module"],
+  "no-console": [true, "log", "error"]
 }

@@ -1,27 +1,52 @@
 <footer class="container-fluid editorFooter fixed-bottom" #editorFooter>
   <div class="row">
-    <div class="col-md-6">
-      <div class="d-inline">
-        <button type="button" class="btn btn-outline-dark">PDF Overview</button>
+    <div class="col-md-6 float-right">
+      <div class="row">
+        <div class="col-md-4">
+         <!-- <div class="d-inline">
+            <button type="button" class="btn btn-outline-dark" (click)="addNewBbox()">Add tracing box</button>
+          </div>-->
+        </div>
+        <div class="col-md-4">
+         <!-- <div class="d-inline">
+            <button type="button" class="btn btn-outline-dark" (click)="rerunWithNewBbox()">Re-run</button>
+          </div>-->
+        </div>
+        <div class="col-md-4" >
+          <div class="d-inline">
+            <button type="button" class="btn btn-outline-dark">PDF Overview</button>
+          </div>
+        </div>
       </div>
+
     </div>
     <div class="col-md-6">
       <div class="row">
         <div class="col-md-4">
           <div class="d-inline">
-            <button type="button" class="btn btn-outline-dark">
+            <button
+              type="button"
+              class="btn btn-outline-dark"
+              (click)="markAllTables()"
+            >
               Mark all for Export
             </button>
           </div>
         </div>
         <div class="col-md-5">
-          <div class="d-inline" >
-            <span id="tableCount">Tables selected for export : 0</span>
+          <div class="d-inline">
+            <span id="tableCount">Tables selected for export : {{tableCount}}</span>
           </div>
         </div>
         <div class="col-md-3">
           <div class="d-inline">
-            <button type="button" class="btn btn-primary">Export</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="exportTables()"
+            >
+              Export
+            </button>
           </div>
         </div>
       </div>

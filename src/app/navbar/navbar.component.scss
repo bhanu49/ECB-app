@@ -2,7 +2,13 @@
   ul{
     li{
       margin:2%;
+      color: white !important;
     }
   }
 }
-
+.navbar{
+  background-color: #003399 !important;
+  .active-link{
+    color: white;
+  }
+}

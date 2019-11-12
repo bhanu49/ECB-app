@@ -1,11 +1,89 @@
 <footer class="container-fluid footer fixed-bottom">
   <div class="row">
-    <div class="col-md-5">
-    </div>
+    <div class="col-md-5"></div>
     <div class="col-md-7 inlineBlock float-right">
-      <button type="button" class="btn btn-outline-dark">Analyse All unlocked</button>
-      <button type="button" class="btn btn-outline-dark">Export All</button>
-      <button type="button" class="btn btn-primary">Import</button>
+      <button type="button" class="btn btn-outline-dark" (click)="runAllFiles()">
+        Run All unlocked
+      </button>
+      <button type="button" class="btn btn-outline-dark" >
+        Export All Unlocked
+      </button>
+      <!--
+          <button type="button" class="btn btn-primary">Import</button>
+      -->
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="openSelectFileModal()"
+      >
+        Select files to Run
+      </button>
     </div>
   </div>
 </footer>
+
+<section>
+  <ng-template #selectModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        Select files to Run
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <strong>Note!</strong> The files displayed below are unlocked files.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="form-check selectAll">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value=""
+          id="selectAll"
+          [checked]="selectAll"
+          (click)="selectAllFiles()"
+        />
+        <label class="form-check-label" for="selectAll">
+          Select All
+        </label>
+      </div>
+      <ul class="list-group">
+        <li *ngFor="let file of fileList | filterBool" class="list-group-item">
+          <div class="checkbox">
+            <label
+              ><input
+                type="checkbox"
+                class="form-check-input"
+                name="fileToRun"
+                [value]="file.name"
+                [(ngModel)]="file.checked"
+                (change)="checkIfAllSelected()"
+              />{{ file.name }}
+            </label>
+            <div class="lastRan">
+              <small>
+                Last Ran: {{ file.last_modified | date: "dd/MM/yyyy" }}
+              </small>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-info" (click)="batchRun()">
+        Batch Run
+      </button>
+    </div>
+  </ng-template>
+</section>

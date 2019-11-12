@@ -12,3 +12,24 @@
     margin-right: 10px;
   }
 }
+
+::ng-deep .selectModal {
+  .selectAll{
+    margin-bottom: 8px;
+  }
+  .modal-content{
+    border-top: 5px solid #ff791f;
+  }
+  .modal-body{
+    max-height: 600px;
+    overflow-y: auto;
+    ul{
+      li{
+        list-style: none;
+      }
+      .checkbox{
+        margin-left: 5px;
+      }
+    }
+  }
+}

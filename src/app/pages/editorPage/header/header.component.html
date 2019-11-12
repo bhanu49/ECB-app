@@ -1,29 +1,37 @@
-<div class="editorHeader">
-<div class="container">
-  <div class="row">
-    <div class="col-md-6 pageSection">
-      <div class="row">
-        <div class="col-md-5">
-          <h5>Analysed Pages</h5>
-        </div>
-        <div class="col-md-7">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search.." #text>
-            <div class="input-group-append">
-              <button class="btn btn-info" type="button" (click)="startSearch(text.value)">
-                <fa-icon [icon]="faSearch" size="1x" id="icon"></fa-icon>
-              </button>
+<div class="editorHeader " [ngClass]="displayAttr ? 'fixed-top' : ''">
+  <div class="container ">
+    <div class="row">
+      <div class="col-md-6 pageSection">
+        <div class="row">
+          <div class="col-md-5">
+            <h5>Analysed Pages</h5>
+          </div>
+          <div class="col-md-7">
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search.."
+                #text
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-info"
+                  type="button"
+                  (click)="startSearch(text.value)"
+                >
+                  <fa-icon [icon]="faSearch" size="1x" id="icon"></fa-icon>
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-    </div>
-    <div class="col-md-6 tableSection">
-      <div>
-        <h5>Extracted tables</h5>
+      <div class="col-md-6 tableSection">
+        <div>
+          <h5>Extracted tables</h5>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>

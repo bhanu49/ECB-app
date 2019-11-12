@@ -27,8 +27,15 @@
 
   .fileName {
     margin-top: 45%;
+    width: 125px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
+  .lastRan{
+    width: 130px;
+  }
   .fileIcon {
     margin: 40% 28%;
   }
@@ -86,7 +93,7 @@ div.tileWrap:hover .fileOperations {
   display: block;
 }
 
-.unlockAndRunWrap{
+.unlockAndRunWrap, .unlockWrap{
   .password{
     width: 115%;
   }
@@ -94,3 +101,6 @@ div.tileWrap:hover .fileOperations {
 .help-block{
   color: tomato;
 }
+
+
+
